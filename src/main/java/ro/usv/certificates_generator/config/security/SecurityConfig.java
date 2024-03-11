@@ -1,4 +1,4 @@
-package ro.usv.certificates_generator.config;
+package ro.usv.certificates_generator.config.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -13,16 +13,12 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import ro.usv.certificates_generator.config.security.CustomOAuth2UserService;
+import ro.usv.certificates_generator.config.security.OAuth2LoginSuccessHandler;
 
 import java.util.List;
 
@@ -35,9 +31,11 @@ public class SecurityConfig {
     private String frontendUrl;
 
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    private final CustomOAuth2UserService oAuth2UserService;
 
-    public SecurityConfig(OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler) {
+    public SecurityConfig(OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler, CustomOAuth2UserService oAuth2UserService) {
         this.oAuth2LoginSuccessHandler = oAuth2LoginSuccessHandler;
+        this.oAuth2UserService = oAuth2UserService;
     }
 
     @Bean
@@ -49,10 +47,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     auth.anyRequest().authenticated();
                 })
-                .formLogin(Customizer.withDefaults())
+
                 .oauth2Login(oath2 -> {
                     oath2.userInfoEndpoint(userinfo ->
-                            userinfo.userService(this.oidcUserService())
+                            userinfo.userService(oAuth2UserService)
                     );
                     oath2.successHandler(oAuth2LoginSuccessHandler);
 
@@ -60,19 +58,6 @@ public class SecurityConfig {
 
 
         return http.build();
-    }
-
-
-    private OAuth2UserService<OAuth2UserRequest, OAuth2User> oidcUserService() {
-        final DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
-        return (userRequest) -> {
-            OAuth2User oAuth2User = delegate.loadUser(userRequest);
-            String email = oAuth2User.getAttribute("email");
-            if (email == null || !email.endsWith("@student.usv.ro") || !email.endsWith("@usm.ro")) {
-               throw new RuntimeException("Domain not allowed");
-            }
-            return oAuth2User;
-        };
     }
 
     @Bean

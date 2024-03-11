@@ -1,4 +1,4 @@
-package ro.usv.certificates_generator.config;
+package ro.usv.certificates_generator.config.security;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
