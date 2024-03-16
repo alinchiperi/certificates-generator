@@ -14,14 +14,14 @@ public class CertificatesGeneratorApplication {
     public static void main(String[] args) {
         SpringApplication.run(CertificatesGeneratorApplication.class, args);
     }
-    @Bean
-    CommandLineRunner runner(UserRepository userRepository) {
-        return args -> {
-
-            User admin = new User("alin.chiperi@student.usv.ro");
-            userRepository.save(admin);
-
-        };
-    }
+//    @Bean
+//    CommandLineRunner runner(UserRepository userRepository) {
+//        return args -> {
+//
+//            User admin = new User("alin.chiperi@student.usv.ro");
+//            userRepository.save(admin);
+//
+//        };
+//    }
 
 }
