@@ -26,14 +26,5 @@ public class StudentExcel {
     String initialaTata;
     char sex;
 
-//    public StudentExcel(String email, String programStudiu, String cicluStudiu, String domeniuStudiu,, String anStudiu String formaInvatamant, String finantare, String initialaTata, char sex) {
-//        this.email = email;
-//        this.programStudiu = programStudiu;
-//        this.cicluStudiu = cicluStudiu;
-//        this.domeniuStudiu = domeniuStudiu;
-//        this.formaInvatamant = formaInvatamant;
-//        this.finantare = finantare;
-//        this.initialaTata = initialaTata;
-//        this.sex = sex;
-//    }
+
 }
