@@ -47,6 +47,6 @@ public class AdeverinteService {
         Optional<StudentExcel> student = studentService.getStudent(email);
         if (student.isPresent())
             return student.get();
-        throw new UsernameNotFoundException("User not found " + email);
+        throw new UsernameNotFoundException("AdminService not found " + email);
     }
 }

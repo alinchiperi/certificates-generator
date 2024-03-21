@@ -13,8 +13,8 @@ import java.util.Collection;
 
 @NoArgsConstructor
 @Entity
-@Table(name = "users")
-public class User implements UserDetails {
+@Table(name = "admin")
+public class Admin implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,8 +24,13 @@ public class User implements UserDetails {
 
     private String password;
 
-    public User(String username) {
+    public Admin(String username) {
         this.username = username;
+    }
+
+    public Admin(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     @Override

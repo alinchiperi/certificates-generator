@@ -48,8 +48,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     auth.anyRequest().authenticated();
                 })
-
+                .formLogin(
+                        form -> form
+                                .defaultSuccessUrl(frontendUrl + "/admin")
+                )
                 .oauth2Login(oath2 -> {
+                    oath2.loginPage("/login-google").permitAll();
                     oath2.userInfoEndpoint(userinfo ->
                             userinfo.userService(oAuth2UserService)
                     );
