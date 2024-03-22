@@ -44,7 +44,6 @@ public class FileService {
             StudentExcel studentExcel = new StudentExcel(email, programStudiu, cicluStudiu, domeniuStudiu, anStudiu, formaInvatamant, finantare, initialaTata, sex);
             studentExcels.add(studentExcel);
 
-
         }
         workbook.close();
         return studentExcels;
