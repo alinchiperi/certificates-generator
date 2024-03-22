@@ -5,9 +5,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import ro.usv.certificates_generator.dto.InformatiiFacultateDto;
+import ro.usv.certificates_generator.dto.SecretareDto;
 import ro.usv.certificates_generator.model.InformatiiFacultate;
+import ro.usv.certificates_generator.model.Secretara;
 import ro.usv.certificates_generator.service.AdminService;
 
 @RestController
@@ -21,6 +25,18 @@ public class AdminController {
     public ResponseEntity<InformatiiFacultate> addInfoFacultate(@RequestBody InformatiiFacultateDto infoDto) {
         InformatiiFacultate informatiiFacultate = adminService.addInformatiiFacultate(infoDto);
         return ResponseEntity.ok(informatiiFacultate);
+    }
+
+    @PostMapping("/addSecretara")
+    public ResponseEntity<Secretara> addSecreatara(@RequestBody SecretareDto secretareDto) {
+        Secretara secretara = adminService.addSecretare(secretareDto);
+        return ResponseEntity.ok(secretara);
+    }
+
+    @PostMapping("/addStudentiExcel")
+    public ResponseEntity<String> addStudentiExcel(@RequestParam("file") MultipartFile file) {
+        adminService.addStudentiExcel(file);
+        return ResponseEntity.ok("Studenti adaugati cu succes");
     }
 
 

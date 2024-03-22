@@ -6,8 +6,11 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import ro.usv.certificates_generator.model.StudentExcel;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -48,7 +51,24 @@ public class FileService {
         workbook.close();
         return studentExcels;
 
+    }
 
+    public String saveStudentsExcel(MultipartFile file){
+        try{
+            String fileName = file.getOriginalFilename();
+
+            File directory = new File("src\\main\\resources\\");
+
+            File newFile = new File(directory.getAbsolutePath() + File.separator + fileName);
+            try (FileOutputStream fos = new FileOutputStream(newFile)) {
+                fos.write(file.getBytes());
+            }
+            return "fisierul a fost salvat cu succes";
+
+        }
+        catch (IOException e){
+            return "nu se poate salva fisierul";
+        }
     }
 
 }
