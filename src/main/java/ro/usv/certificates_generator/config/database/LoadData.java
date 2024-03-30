@@ -18,7 +18,7 @@ public class LoadData implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        List<StudentExcel> students = fileService.loadStudentsFromExcel("studenti.xlsx");
+        List<StudentExcel> students = fileService.loadStudentsFromExcel("studenti.xlsx").successStudents();
         repository.saveAll(students);
     }
 }

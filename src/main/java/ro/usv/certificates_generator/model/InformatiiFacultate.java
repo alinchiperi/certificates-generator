@@ -26,6 +26,4 @@ public class InformatiiFacultate {
     private String anUniversitar;
     private String numeDecan;
     private String numeSecretarSef;
-
-
 }

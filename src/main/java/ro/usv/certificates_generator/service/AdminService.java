@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import ro.usv.certificates_generator.dto.AddStudentiExcelResponse;
 import ro.usv.certificates_generator.dto.InformatiiFacultateDto;
 import ro.usv.certificates_generator.dto.SecretareDto;
 import ro.usv.certificates_generator.model.InformatiiFacultate;
@@ -14,6 +14,8 @@ import ro.usv.certificates_generator.model.Secretara;
 import ro.usv.certificates_generator.repository.AdminRepository;
 import ro.usv.certificates_generator.repository.InformatiiFacultateRepository;
 import ro.usv.certificates_generator.repository.SecretaraRepository;
+
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -39,15 +41,9 @@ public class AdminService implements UserDetailsService {
         return secretaraRepository.save(secretara);
     }
 
-    public String addStudentiExcel(MultipartFile file) {
-        try {
-            fileService.saveStudentsExcel(file);
+    public AddStudentiExcelResponse addStudentiExcel(MultipartFile file) throws IOException {
 
-            return "Fisier incarcat cu succes";
-
-        } catch (Exception e) {
-            return "Nu se poate incarca fisierul";
-        }
+       return fileService.saveStudentsExcelToLocal(file);
 
 
     }

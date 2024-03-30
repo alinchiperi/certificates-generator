@@ -8,11 +8,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import ro.usv.certificates_generator.dto.AddStudentiExcelResponse;
 import ro.usv.certificates_generator.dto.InformatiiFacultateDto;
 import ro.usv.certificates_generator.dto.SecretareDto;
 import ro.usv.certificates_generator.model.InformatiiFacultate;
 import ro.usv.certificates_generator.model.Secretara;
 import ro.usv.certificates_generator.service.AdminService;
+
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,9 +37,9 @@ public class AdminController {
     }
 
     @PostMapping("/addStudentiExcel")
-    public ResponseEntity<String> addStudentiExcel(@RequestParam("file") MultipartFile file) {
-        adminService.addStudentiExcel(file);
-        return ResponseEntity.ok("Studenti adaugati cu succes");
+    public ResponseEntity<AddStudentiExcelResponse> addStudentiExcel(@RequestParam("file") MultipartFile file) throws IOException {
+        AddStudentiExcelResponse addStudentiExcelResponse = adminService.addStudentiExcel(file);
+        return ResponseEntity.ok(addStudentiExcelResponse);
     }
 
 

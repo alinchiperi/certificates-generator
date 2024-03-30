@@ -27,6 +27,7 @@ public class Secretara {
     private String titlu;
     private String email;
 
+
     public Secretara(String nume, String prenume, String titlu, String email) {
         this.nume = nume;
         this.prenume = prenume;
