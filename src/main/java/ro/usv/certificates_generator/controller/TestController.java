@@ -33,16 +33,7 @@ public class TestController {
         return "Hello docker";
     }
 
-    @GetMapping("students")
-    public ResponseEntity<AddStudentiExcelResponse> getStudents() {
-        try {
-            AddStudentiExcelResponse addStudentiExcelResponse = fileService.loadStudentsFromExcel("studenti.xlsx");
-            return ResponseEntity.ok(addStudentiExcelResponse);
-        } catch (Exception e) {
-            log.error("Exeption: " + e.getMessage());
-            return ResponseEntity.ok(new AddStudentiExcelResponse(new ArrayList<>(), new ArrayList<>()));
-        }
-    }
+
 
     @GetMapping("student")
     public ResponseEntity<StudentExcel> student() {

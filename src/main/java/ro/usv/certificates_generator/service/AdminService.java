@@ -17,6 +17,7 @@ import ro.usv.certificates_generator.repository.SecretaraRepository;
 import ro.usv.certificates_generator.repository.StudentExcelRepository;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +46,11 @@ public class AdminService implements UserDetailsService {
 
     public AddStudentiExcelResponse addStudentiExcel(MultipartFile file) throws IOException {
         studentRepository.deleteAll();
-        return fileService.saveStudentsExcelToLocal(file);
+        InputStream inputStream = file.getInputStream();
+        AddStudentiExcelResponse addStudentiExcelResponse = fileService.loadStudentsFromExcel(inputStream);
+        studentRepository.saveAll(addStudentiExcelResponse.successStudents());
+        fileService.saveStudentsExcelToLocal(file);
+        return addStudentiExcelResponse;
     }
 
     public void reset() {

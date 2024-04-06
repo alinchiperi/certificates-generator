@@ -1,5 +1,6 @@
 package ro.usv.certificates_generator.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -23,48 +24,46 @@ import java.util.Iterator;
 import java.util.List;
 
 @Service
+@Slf4j
 public class FileService {
     private final AdverintaRaportStudentRepository adverintaRaportStudentRepository;
     private final List<StudentExcel> failsStudents = new ArrayList<>();
+    List<StudentExcel> successStudents = new ArrayList<>();
 
     public FileService(AdverintaRaportStudentRepository adverintaRaportStudentRepository) {
         this.adverintaRaportStudentRepository = adverintaRaportStudentRepository;
     }
 
+    public AddStudentiExcelResponse loadStudentsFromExcel(InputStream inputStream) {
+        try {
 
-    public AddStudentiExcelResponse loadStudentsFromExcel(String filePath) throws IOException {
-        List<StudentExcel> successStudents = new ArrayList<>();
-
-        InputStream inputStream = new ClassPathResource(filePath).getInputStream();
-
-        Workbook workbook = WorkbookFactory.create(inputStream);
-        Sheet sheet = workbook.getSheetAt(0);
-
-        Iterator<Row> rowIterator = sheet.iterator();
-        // Skip header row if needed
-        if (rowIterator.hasNext()) {
-            rowIterator.next(); // Skip header row
-        }
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            StudentExcel studentExcel = createStudentFromRow(row);
-
-
-            try {
-                validateEmailDomain(studentExcel.getEmail());
-
-                successStudents.add(studentExcel);
-
-
-            } catch (IllegalArgumentException e) {
-                failsStudents.add(studentExcel);
+            Workbook workbook = WorkbookFactory.create(inputStream);
+            Sheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.iterator();
+            // Skip header row if needed
+            if (rowIterator.hasNext()) {
+                rowIterator.next(); // Skip header row
             }
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+                StudentExcel studentExcel = createStudentFromRow(row);
+
+                try {
+                    validateEmailDomain(studentExcel.getEmail());
+                    successStudents.add(studentExcel);
+                } catch (IllegalArgumentException e) {
+                    failsStudents.add(studentExcel);
+                }
+            }
+
+        } catch (IOException e) {
+            log.error("Error while loading excel file", e);
         }
-        workbook.close();
         return new AddStudentiExcelResponse(successStudents, failsStudents);
     }
 
-    public AddStudentiExcelResponse saveStudentsExcelToLocal(MultipartFile file) throws IOException {
+
+    public void saveStudentsExcelToLocal(MultipartFile file) throws IOException {
 
         String fileName = "studenti.xlsx";
 
@@ -75,7 +74,6 @@ public class FileService {
             fos.write(file.getBytes());
         }
 
-        return loadStudentsFromExcel("studenti.xlsx");
     }
 
     public void generateYearReport(String year) {
@@ -109,7 +107,7 @@ public class FileService {
                 row.createCell(11).setCellValue(adverinta.getScopAdeverinta());
             }
 
-            try (FileOutputStream fileOut = new FileOutputStream(year+".xlsx")) {
+            try (FileOutputStream fileOut = new FileOutputStream(year + ".xlsx")) {
                 workbook.write(fileOut);
             }
 
@@ -141,4 +139,6 @@ public class FileService {
 
         return new StudentExcel(email, programStudiu, cicluStudiu, domeniuStudiu, anStudiu, formaInvatamant, finantare, initialaTata, sex);
     }
+
+
 }
