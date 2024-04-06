@@ -44,10 +44,13 @@ public class SecurityConfig {
 
         http
                 .csrf(AbstractHttpConfigurer::disable)
+
                 .cors(cors -> corsConfigurationSource())
                 .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers("api/admin/*", "/h2-console/").permitAll();
                     auth.anyRequest().authenticated();
                 })
+
                 .formLogin(
                         form -> form
                                 .defaultSuccessUrl(frontendUrl + "/admin")

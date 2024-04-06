@@ -26,5 +26,4 @@ public class StudentExcel {
     String initialaTata;
     char sex;
 
-
 }
