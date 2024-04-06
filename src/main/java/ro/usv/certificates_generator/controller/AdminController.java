@@ -42,5 +42,10 @@ public class AdminController {
         return ResponseEntity.ok(addStudentiExcelResponse);
     }
 
+    @PostMapping("/reset")
+    public void reset() {
+        adminService.reset();
+    }
+
 
 }

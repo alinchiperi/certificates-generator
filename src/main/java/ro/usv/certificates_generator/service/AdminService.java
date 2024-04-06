@@ -14,6 +14,7 @@ import ro.usv.certificates_generator.model.Secretara;
 import ro.usv.certificates_generator.repository.AdminRepository;
 import ro.usv.certificates_generator.repository.InformatiiFacultateRepository;
 import ro.usv.certificates_generator.repository.SecretaraRepository;
+import ro.usv.certificates_generator.repository.StudentExcelRepository;
 
 import java.io.IOException;
 
@@ -24,6 +25,7 @@ public class AdminService implements UserDetailsService {
     private final InformatiiFacultateRepository informatiiFacultateRepository;
     private final SecretaraRepository secretaraRepository;
     private final FileService fileService;
+    private final StudentExcelRepository studentRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -42,9 +44,12 @@ public class AdminService implements UserDetailsService {
     }
 
     public AddStudentiExcelResponse addStudentiExcel(MultipartFile file) throws IOException {
+        studentRepository.deleteAll();
+        return fileService.saveStudentsExcelToLocal(file);
+    }
 
-       return fileService.saveStudentsExcelToLocal(file);
-
-
+    public void reset() {
+        //TODO not mock year, add from controller
+        fileService.generateYearReport("2023-2024");
     }
 }

@@ -5,11 +5,14 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ro.usv.certificates_generator.dto.AddStudentiExcelResponse;
+import ro.usv.certificates_generator.model.AdverintaRaportStudent;
 import ro.usv.certificates_generator.model.StudentExcel;
+import ro.usv.certificates_generator.repository.AdverintaRaportStudentRepository;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,8 +24,12 @@ import java.util.List;
 
 @Service
 public class FileService {
+    private final AdverintaRaportStudentRepository adverintaRaportStudentRepository;
+    private final List<StudentExcel> failsStudents = new ArrayList<>();
 
-    private List<StudentExcel> failsStudents = new ArrayList<>();
+    public FileService(AdverintaRaportStudentRepository adverintaRaportStudentRepository) {
+        this.adverintaRaportStudentRepository = adverintaRaportStudentRepository;
+    }
 
 
     public AddStudentiExcelResponse loadStudentsFromExcel(String filePath) throws IOException {
@@ -69,6 +76,46 @@ public class FileService {
         }
 
         return loadStudentsFromExcel("studenti.xlsx");
+    }
+
+    public void generateYearReport(String year) {
+
+        List<AdverintaRaportStudent> adeverinte = adverintaRaportStudentRepository.findByAnStudiu(year);
+        try (Workbook workbook = new XSSFWorkbook()) {
+            Sheet sheet = workbook.createSheet(year);
+            Row headerRow = sheet.createRow(0);
+            String[] headers = {"Nr. înregistrare", "Data înregistrării", "Nume student", "Inițiala tatălui", "Prenume student",
+                    "Domeniu de studii", "Program de studiu", "Forma de învățământ", "Tipul studiilor universitare",
+                    "An de studiu", "Finanțare student", "Scop adeverință"};
+
+            for (int i = 0; i < headers.length; i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(headers[i]);
+            }
+            int rowNum = 1;
+            for (AdverintaRaportStudent adverinta : adeverinte) {
+                Row row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue(adverinta.getNumarInregistrare());
+                row.createCell(1).setCellValue(adverinta.getDataInregistrarii().toString());
+                row.createCell(2).setCellValue(adverinta.getNumeStudent());
+                row.createCell(3).setCellValue(adverinta.getInitialaTatalui());
+                row.createCell(4).setCellValue(adverinta.getPrenumeStudent());
+                row.createCell(5).setCellValue(adverinta.getDomeniuStudii());
+                row.createCell(6).setCellValue(adverinta.getProgramStudiu());
+                row.createCell(7).setCellValue(adverinta.getFormaInvatamant());
+                row.createCell(8).setCellValue(adverinta.getTipStudii());
+                row.createCell(9).setCellValue(adverinta.getAnStudiu());
+                row.createCell(10).setCellValue(adverinta.getFinantareStudent());
+                row.createCell(11).setCellValue(adverinta.getScopAdeverinta());
+            }
+
+            try (FileOutputStream fileOut = new FileOutputStream(year+".xlsx")) {
+                workbook.write(fileOut);
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void validateEmailDomain(String email) throws IllegalArgumentException {
