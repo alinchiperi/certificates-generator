@@ -1,5 +1,6 @@
 package ro.usv.certificates_generator.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,9 +19,10 @@ import org.springframework.stereotype.Service;
 @Setter
 @NoArgsConstructor
 public class InformatiiFacultate {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(unique = true)
+    private final String entityIdentifier = "SINGLETON";
     private String numeFacultate;
     private String precurtareFacultate;
     private String anUniversitar;

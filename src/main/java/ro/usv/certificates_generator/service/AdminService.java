@@ -57,4 +57,44 @@ public class AdminService implements UserDetailsService {
         //TODO not mock year, add from controller
         fileService.generateYearReport("2023-2024");
     }
+
+    public InformatiiFacultateDto updateNumeFacultate(String numeFacultate) {
+        InformatiiFacultate informatiiFacultate = getInformatiiFacultate();
+        informatiiFacultate.setNumeFacultate(numeFacultate);
+        informatiiFacultateRepository.save(informatiiFacultate);
+        return InformatiiFacultateDto.fromInformatiiFacultate(informatiiFacultate);
+    }
+
+    public InformatiiFacultate getInformatiiFacultate() {
+       return informatiiFacultateRepository.getInformatiiFacultate();
+    }
+
+    public InformatiiFacultateDto updateNumeDecan(String numeDecan) {
+        InformatiiFacultate informatiiFacultate = getInformatiiFacultate();
+        informatiiFacultate.setNumeDecan(numeDecan);
+        informatiiFacultateRepository.save(informatiiFacultate);
+        return InformatiiFacultateDto.fromInformatiiFacultate(informatiiFacultate);
+
+    }
+
+    public InformatiiFacultateDto updateNumeSecretaraSef(String numeSeretaraSef) {
+        InformatiiFacultate informatiiFacultate = getInformatiiFacultate();
+        informatiiFacultate.setNumeSecretarSef(numeSeretaraSef);
+        informatiiFacultateRepository.save(informatiiFacultate);
+        return InformatiiFacultateDto.fromInformatiiFacultate(informatiiFacultate);
+    }
+
+    public InformatiiFacultateDto updatePrescurtareFacultate(String prescurtareFacultate) {
+        InformatiiFacultate informatiiFacultate = getInformatiiFacultate();
+        informatiiFacultate.setPrecurtareFacultate(prescurtareFacultate);
+        informatiiFacultateRepository.save(informatiiFacultate);
+        return InformatiiFacultateDto.fromInformatiiFacultate(informatiiFacultate);
+    }
+
+    public InformatiiFacultateDto updateAnUniversitar(String anUniversitar) {
+        InformatiiFacultate informatiiFacultate = getInformatiiFacultate();
+        informatiiFacultate.setAnUniversitar(anUniversitar);
+        informatiiFacultateRepository.save(informatiiFacultate);
+        return InformatiiFacultateDto.fromInformatiiFacultate(informatiiFacultate);
+    }
 }

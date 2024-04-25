@@ -6,7 +6,7 @@ import jakarta.persistence.Id;
 import ro.usv.certificates_generator.model.InformatiiFacultate;
 
 public record InformatiiFacultateDto(
-        int id,
+
         String numeFacultate,
         String precurtareFacultate,
         String anUniversitar,
@@ -15,6 +15,16 @@ public record InformatiiFacultateDto(
 ) {
 
     public InformatiiFacultate toInformatiiFacultate() {
-        return new InformatiiFacultate(this.id, this.numeFacultate, this.precurtareFacultate, this.anUniversitar, this.numeDecan, this.numeSecretarSef);
+        return new InformatiiFacultate( this.numeFacultate, this.precurtareFacultate, this.anUniversitar, this.numeDecan, this.numeSecretarSef);
+    }
+
+    public static InformatiiFacultateDto fromInformatiiFacultate(InformatiiFacultate informatiiFacultate) {
+        return new InformatiiFacultateDto(
+                informatiiFacultate.getNumeFacultate(),
+                informatiiFacultate.getPrecurtareFacultate(),
+                informatiiFacultate.getAnUniversitar(),
+                informatiiFacultate.getNumeDecan(),
+                informatiiFacultate.getNumeSecretarSef()
+        );
     }
 }
