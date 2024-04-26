@@ -3,12 +3,15 @@ package ro.usv.certificates_generator.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ro.usv.certificates_generator.dto.AdeverintaStudentDto;
 import ro.usv.certificates_generator.dto.CerereStudentDto;
+import ro.usv.certificates_generator.model.CerereStatus;
 import ro.usv.certificates_generator.model.CerereStudent;
 import ro.usv.certificates_generator.model.StudentExcel;
 import ro.usv.certificates_generator.repository.CerereStudentRepository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,7 +30,7 @@ public class AdeverinteService {
         String prenume = extractPrenume(nameParts);
         String scop = request.scop();
         LocalDate dataCerere = LocalDate.now();
-        CerereStudent cerereStudent = new CerereStudent(email,nume,prenume,dataCerere,scop);
+        CerereStudent cerereStudent = new CerereStudent(email, nume, prenume, dataCerere, scop);
         return cerereStudentRepository.save(cerereStudent);
 
     }
@@ -47,6 +50,12 @@ public class AdeverinteService {
         Optional<StudentExcel> student = studentService.getStudent(email);
         if (student.isPresent())
             return student.get();
-        throw new UsernameNotFoundException("AdminService not found " + email);
+        throw new UsernameNotFoundException("Student not found " + email);
+    }
+
+    public List<AdeverintaStudentDto> getAdeverinteCuStatus(CerereStatus status) {
+        List<CerereStudent> cerereStudentByStatus = cerereStudentRepository.findCerereStudentByStatus(status);
+        return cerereStudentByStatus.stream().map(AdeverintaStudentDto::fromCerereStudent).toList();
+
     }
 }
