@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table
@@ -24,7 +25,8 @@ public class AdverintaRaportStudent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String numarInregistrare;
+    private int numarInregistrare;
+    private int numarOrdine;
     private LocalDate dataInregistrarii;
     private String numeStudent;
     private char initialaTatalui;
@@ -36,5 +38,10 @@ public class AdverintaRaportStudent {
     private String anStudiu;
     private String finantareStudent;
     private String scopAdeverinta;
+
+    public String nrInregistrare() {
+        String formattedDate = dataInregistrarii.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")).replace(".", "");
+        return numarInregistrare + ".A." + numarOrdine + "/" + formattedDate;
+    }
 
 }
