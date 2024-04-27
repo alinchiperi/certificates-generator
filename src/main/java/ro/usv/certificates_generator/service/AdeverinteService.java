@@ -7,7 +7,7 @@ import ro.usv.certificates_generator.dto.AdeverintaStudentDto;
 import ro.usv.certificates_generator.dto.CerereStudentDto;
 import ro.usv.certificates_generator.model.CerereStatus;
 import ro.usv.certificates_generator.model.CerereStudent;
-import ro.usv.certificates_generator.model.StudentExcel;
+import ro.usv.certificates_generator.model.Student;
 import ro.usv.certificates_generator.repository.CerereStudentRepository;
 
 import java.time.LocalDate;
@@ -46,8 +46,8 @@ public class AdeverinteService {
         return firstNameBuilder.toString();
     }
 
-    public StudentExcel getStudent(String email) {
-        Optional<StudentExcel> student = studentService.getStudent(email);
+    public Student getStudent(String email) {
+        Optional<Student> student = studentService.getStudent(email);
         if (student.isPresent())
             return student.get();
         throw new UsernameNotFoundException("Student not found " + email);

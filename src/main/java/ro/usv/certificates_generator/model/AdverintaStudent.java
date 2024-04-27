@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +21,7 @@ import java.time.format.DateTimeFormatter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdverintaRaportStudent {
+public class AdverintaStudent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,16 +30,12 @@ public class AdverintaRaportStudent {
     private int numarInregistrare;
     private int numarOrdine;
     private LocalDate dataInregistrarii;
-    private String numeStudent;
-    private char initialaTatalui;
-    private String prenumeStudent;
-    private String domeniuStudii;
-    private String programStudiu;
-    private String formaInvatamant;
-    private String tipStudii;
-    private String anStudiu;
-    private String finantareStudent;
     private String scopAdeverinta;
+    private String anUniversitar;
+
+    @ManyToOne
+    @JoinColumn(name = "student_id")
+    private Student student;
 
     public String nrInregistrare() {
         String formattedDate = dataInregistrarii.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")).replace(".", "");

@@ -3,21 +3,13 @@ package ro.usv.certificates_generator.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ro.usv.certificates_generator.dto.AddStudentiExcelResponse;
-import ro.usv.certificates_generator.model.StudentExcel;
+import ro.usv.certificates_generator.model.Student;
 import ro.usv.certificates_generator.repository.StudentExcelRepository;
 import ro.usv.certificates_generator.service.AuthService;
 import ro.usv.certificates_generator.service.FileService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,9 +28,9 @@ public class TestController {
 
 
     @GetMapping("student")
-    public ResponseEntity<StudentExcel> student() {
-        StudentExcel studentExcel = repository.findById("alin.chiperi1@student.usv.ro").get();
-        return ResponseEntity.ok(studentExcel);
+    public ResponseEntity<Student> student() {
+        Student student = repository.findById("alin.chiperi1@student.usv.ro").get();
+        return ResponseEntity.ok(student);
     }
 
     @GetMapping("auth")
