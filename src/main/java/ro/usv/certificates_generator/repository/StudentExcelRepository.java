@@ -2,8 +2,8 @@ package ro.usv.certificates_generator.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import ro.usv.certificates_generator.model.StudentExcel;
+import ro.usv.certificates_generator.model.Student;
 
 @Repository
-public interface StudentExcelRepository extends CrudRepository<StudentExcel, String> {
+public interface StudentExcelRepository extends CrudRepository<Student, String> {
 }

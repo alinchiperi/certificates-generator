@@ -4,12 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
-import ro.usv.certificates_generator.model.StudentExcel;
+import ro.usv.certificates_generator.model.Student;
 import ro.usv.certificates_generator.repository.StudentExcelRepository;
 import ro.usv.certificates_generator.service.FileService;
 
 import java.io.InputStream;
-import java.net.URL;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -28,7 +27,7 @@ public class LoadData implements CommandLineRunner {
         }
         InputStream inputStream = resource.getInputStream();
 
-        List<StudentExcel> students = fileService.loadStudentsFromExcel(inputStream).successStudents();
+        List<Student> students = fileService.loadStudentsFromExcel(inputStream).successStudents();
         repository.saveAll(students);
 
     }

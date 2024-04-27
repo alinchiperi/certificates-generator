@@ -7,13 +7,12 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ro.usv.certificates_generator.dto.AddStudentiExcelResponse;
-import ro.usv.certificates_generator.model.AdverintaRaportStudent;
-import ro.usv.certificates_generator.model.StudentExcel;
-import ro.usv.certificates_generator.repository.AdverintaRaportStudentRepository;
+import ro.usv.certificates_generator.model.AdverintaStudent;
+import ro.usv.certificates_generator.model.Student;
+import ro.usv.certificates_generator.repository.AdverintaStudentRepository;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,12 +25,12 @@ import java.util.List;
 @Service
 @Slf4j
 public class FileService {
-    private final AdverintaRaportStudentRepository adverintaRaportStudentRepository;
-    private final List<StudentExcel> failsStudents = new ArrayList<>();
-    List<StudentExcel> successStudents = new ArrayList<>();
+    private final AdverintaStudentRepository adverintaStudentRepository;
+    private final List<Student> failsStudents = new ArrayList<>();
+    List<Student> successStudents = new ArrayList<>();
 
-    public FileService(AdverintaRaportStudentRepository adverintaRaportStudentRepository) {
-        this.adverintaRaportStudentRepository = adverintaRaportStudentRepository;
+    public FileService(AdverintaStudentRepository adverintaStudentRepository) {
+        this.adverintaStudentRepository = adverintaStudentRepository;
     }
 
     public AddStudentiExcelResponse loadStudentsFromExcel(InputStream inputStream) {
@@ -46,13 +45,13 @@ public class FileService {
             }
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
-                StudentExcel studentExcel = createStudentFromRow(row);
+                Student student = createStudentFromRow(row);
 
                 try {
-                    validateEmailDomain(studentExcel.getEmail());
-                    successStudents.add(studentExcel);
+                    validateEmailDomain(student.getEmail());
+                    successStudents.add(student);
                 } catch (IllegalArgumentException e) {
-                    failsStudents.add(studentExcel);
+                    failsStudents.add(student);
                 }
             }
 
@@ -78,11 +77,12 @@ public class FileService {
 
     public void generateYearReport(String year) {
 
-        List<AdverintaRaportStudent> adeverinte = adverintaRaportStudentRepository.findByAnStudiu(year);
+        List<AdverintaStudent> adeverinte = adverintaStudentRepository.findByAnUniversitar(year);
+
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet(year);
             Row headerRow = sheet.createRow(0);
-            String[] headers = {"Nr. înregistrare", "Data înregistrării", "Nume student", "Inițiala tatălui", "Prenume student",
+            String[] headers = {"Nr. înregistrare", "Data înregistrării", "Nume student",
                     "Domeniu de studii", "Program de studiu", "Forma de învățământ", "Tipul studiilor universitare",
                     "An de studiu", "Finanțare student", "Scop adeverință"};
 
@@ -91,19 +91,20 @@ public class FileService {
                 cell.setCellValue(headers[i]);
             }
             int rowNum = 1;
-            for (AdverintaRaportStudent adverinta : adeverinte) {
+            for (AdverintaStudent adverinta : adeverinte) {
                 Row row = sheet.createRow(rowNum++);
+                Student student = adverinta.getStudent();
+
                 row.createCell(0).setCellValue(adverinta.getNumarInregistrare());
                 row.createCell(1).setCellValue(adverinta.getDataInregistrarii().toString());
-                row.createCell(2).setCellValue(adverinta.getNumeStudent());
-                row.createCell(3).setCellValue(adverinta.getInitialaTatalui());
-                row.createCell(4).setCellValue(adverinta.getPrenumeStudent());
-                row.createCell(5).setCellValue(adverinta.getDomeniuStudii());
-                row.createCell(6).setCellValue(adverinta.getProgramStudiu());
-                row.createCell(7).setCellValue(adverinta.getFormaInvatamant());
-                row.createCell(8).setCellValue(adverinta.getTipStudii());
-                row.createCell(9).setCellValue(adverinta.getAnStudiu());
-                row.createCell(10).setCellValue(adverinta.getFinantareStudent());
+                row.createCell(2).setCellValue(student.getNumeComplet());
+                row.createCell(5).setCellValue(student.getDomeniuStudiu());
+                row.createCell(6).setCellValue(student.getProgramStudiu());
+                row.createCell(7).setCellValue(student.getFormaInvatamant());
+                row.createCell(8).setCellValue(student.getCicluStudiu());
+                row.createCell(9).setCellValue(student.getAnStudiu());
+                row.createCell(10).setCellValue(student.getFinantare());
+
                 row.createCell(11).setCellValue(adverinta.getScopAdeverinta());
             }
 
@@ -126,7 +127,7 @@ public class FileService {
         return cell != null ? cell.getStringCellValue().trim() : "";
     }
 
-    private StudentExcel createStudentFromRow(Row row) {
+    private Student createStudentFromRow(Row row) {
         String email = getStringCellValue(row.getCell(0));
         String programStudiu = getStringCellValue(row.getCell(1));
         String cicluStudiu = getStringCellValue(row.getCell(2));
@@ -134,10 +135,10 @@ public class FileService {
         String domeniuStudiu = getStringCellValue(row.getCell(4));
         String formaInvatamant = getStringCellValue(row.getCell(5));
         String finantare = getStringCellValue(row.getCell(6));
-        String initialaTata = getStringCellValue(row.getCell(7));
+        String numeComplet = getStringCellValue(row.getCell(7));
         char sex = getStringCellValue(row.getCell(8)).charAt(0);
 
-        return new StudentExcel(email, programStudiu, cicluStudiu, domeniuStudiu, anStudiu, formaInvatamant, finantare, initialaTata, sex);
+        return new Student(email, programStudiu, cicluStudiu, domeniuStudiu, anStudiu, formaInvatamant, finantare, numeComplet, sex);
     }
 
 
