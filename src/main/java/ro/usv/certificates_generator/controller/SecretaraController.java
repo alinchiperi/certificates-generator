@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ro.usv.certificates_generator.dto.AdeverintaStudentDto;
 import ro.usv.certificates_generator.service.AdeverinteService;
@@ -29,7 +30,16 @@ public class SecretaraController {
     @PostMapping("/adeverinta/{idAdeverinta}/aproba/{numarInregistrare}")
     public void aprobaPrimaAdeverinta(@PathVariable("idAdeverinta") Integer idAdeverinta, @PathVariable("numarInregistrare") Integer nrInregistrare) {
 
-
     }
+
+    @PostMapping("/numarInregistrare")
+    public void setNumarInregistrare(@RequestParam ("numarInregistrare") Integer numarInregistrare) {
+        secretaraService.setNumarInregistrare(numarInregistrare);
+    }
+    @GetMapping("/numarInregistrare")
+    public int getNumarInregistrare() {
+        return secretaraService.getNumarInregistrare();
+    }
+
 
 }
