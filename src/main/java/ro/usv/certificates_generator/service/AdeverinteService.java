@@ -1,8 +1,11 @@
 package ro.usv.certificates_generator.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ro.usv.certificates_generator.dto.AdeverintaAprobataDto;
 import ro.usv.certificates_generator.dto.AdeverintaStudentDto;
 import ro.usv.certificates_generator.dto.CerereStudentDto;
 import ro.usv.certificates_generator.model.AdeverintaStudent;
@@ -47,5 +50,34 @@ public class AdeverinteService {
         List<AdeverintaStudent> adeverintaStudentByStatus = adeverintaStudentRepository.findAdeverintaStudentsByStatus(status);
 
         return adeverintaStudentByStatus.stream().map(AdeverintaStudentDto::fromAdeverintaStudent).toList();
+    }
+
+    public Page<AdeverintaStudentDto> findAdeverintaStudentsPending( int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<AdeverintaStudent> pageResult = adeverintaStudentRepository.findAdeverintaStudentsByStatus(CerereStatus.PENDING, pageRequest);
+        return pageResult.map(AdeverintaStudentDto::fromAdeverintaStudent);
+    }
+    public Page<AdeverintaAprobataDto> findAdeverintaStudentsApproved(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<AdeverintaStudent> pageResult = adeverintaStudentRepository.findAdeverintaStudentsByStatus(CerereStatus.PENDING, pageRequest);
+        return pageResult.map(AdeverintaAprobataDto::fromAdeverintaStudent);
+    }
+
+
+    public Page<AdeverintaStudentDto> findAdeverinteBetweenDates(LocalDate startDate, LocalDate endDate, int page, int size) {
+
+        Page<AdeverintaStudent> pageResult = getAdeverintaStudentsBetween(startDate, endDate, page, size);
+        return pageResult.map(AdeverintaStudentDto::fromAdeverintaStudent);
+    }
+
+    public Page<AdeverintaAprobataDto> findAdeverinteAprobateBetweenDates(LocalDate startDate, LocalDate endDate, int page, int size) {
+        Page<AdeverintaStudent> pageResult = getAdeverintaStudentsBetween(startDate, endDate, page, size);
+        return pageResult.map(AdeverintaAprobataDto::fromAdeverintaStudent);
+    }
+
+    private Page<AdeverintaStudent> getAdeverintaStudentsBetween(LocalDate startDate, LocalDate endDate, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<AdeverintaStudent> pageResult = adeverintaStudentRepository.findAdeverintaStudentsByDataCerereBetween(startDate, endDate, pageRequest);
+        return pageResult;
     }
 }

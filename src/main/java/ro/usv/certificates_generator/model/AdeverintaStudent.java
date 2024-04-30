@@ -41,6 +41,9 @@ public class AdeverintaStudent {
     @Enumerated(EnumType.STRING)
     private CerereStatus status = CerereStatus.PENDING;
 
+    private boolean isPrinted = false;
+
+
     @ManyToOne
     @JoinColumn(name = "student_id")
     private Student student;
@@ -52,8 +55,8 @@ public class AdeverintaStudent {
     }
 
 
-    public String nrInregistrare() {
-        String formattedDate = dataInregistrarii.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")).replace(".", "");
+    public String getNrInregistrare() {
+        String formattedDate = dataInregistrarii.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         return numarInregistrare + ".A." + numarOrdine + "/" + formattedDate;
     }
 

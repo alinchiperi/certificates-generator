@@ -16,7 +16,5 @@ public record AdeverintaStudentDto(
     public static AdeverintaStudentDto fromAdeverintaStudent(AdeverintaStudent adeverintaStudent) {
         Student student = adeverintaStudent.getStudent();
         return new AdeverintaStudentDto(adeverintaStudent.getId(), student.getEmail(), student.getNumeComplet(), adeverintaStudent.getDataCerere(), adeverintaStudent.getScop());
-
-
     }
 }
