@@ -6,8 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,24 +15,24 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 @Entity
-@Table
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class AdverintaStudent {
+@Table
+public class AdeverintaRespinsa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String numarInregistrare;
-    private LocalDate dataInregistrarii;
-    private String scopAdeverinta;
-    private String anUniversitar;
+    private String motiv;
+    private LocalDate data;
 
     @ManyToOne
-    @JoinColumn(name = "student_id")
-    private Student student;
+    @JoinColumn(name = "secretara_id") // name of the foreign key column in AdeverintaRespinsa table
+    private Secretara secretara;
 
+    @OneToOne
+    @JoinColumn(name = "adeverinta_student_id") // name of the foreign key column in AdeverintaRespinsa table
+    private AdeverintaStudent adeverintaStudent;
 }

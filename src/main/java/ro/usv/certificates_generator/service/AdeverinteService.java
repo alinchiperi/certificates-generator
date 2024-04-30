@@ -1,14 +1,20 @@
 package ro.usv.certificates_generator.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ro.usv.certificates_generator.dto.AdeverintaAprobataDto;
+import ro.usv.certificates_generator.dto.AdeverintaStudentDto;
 import ro.usv.certificates_generator.dto.CerereStudentDto;
-import ro.usv.certificates_generator.model.CerereStudent;
+import ro.usv.certificates_generator.model.AdeverintaStudent;
+import ro.usv.certificates_generator.model.CerereStatus;
 import ro.usv.certificates_generator.model.Student;
-import ro.usv.certificates_generator.repository.CerereStudentRepository;
+import ro.usv.certificates_generator.repository.AdeverintaStudentRepository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,37 +22,68 @@ import java.util.Optional;
 public class AdeverinteService {
     private final AuthService authService;
     private final StudentService studentService;
-    private final CerereStudentRepository cerereStudentRepository;
 
-    public CerereStudent procesareCerereStudent(CerereStudentDto request) {
+
+    private final AdeverintaStudentRepository adeverintaStudentRepository;
+
+    public void procesareCerereStudent(CerereStudentDto request) {
 
         String email = authService.getEmail();
-        String fullName = authService.getUserName();
-        String[] nameParts = fullName.split("\\s+");
-        String nume = nameParts[nameParts.length - 1];
-        String prenume = extractPrenume(nameParts);
+
+        Student student = getStudent(email);
         String scop = request.scop();
         LocalDate dataCerere = LocalDate.now();
-        CerereStudent cerereStudent = new CerereStudent(email,nume,prenume,dataCerere,scop);
-        return cerereStudentRepository.save(cerereStudent);
+        AdeverintaStudent adeverintaStudent = new AdeverintaStudent(student, scop, dataCerere);
+        adeverintaStudentRepository.save(adeverintaStudent);
 
     }
 
-    private static String extractPrenume(String[] nameParts) {
-        StringBuilder firstNameBuilder = new StringBuilder();
-        for (int i = 0; i < nameParts.length - 1; i++) {
-            if (i > 0) {
-                firstNameBuilder.append(" "); // Add space separator between names
-            }
-            firstNameBuilder.append(nameParts[i]);
-        }
-        return firstNameBuilder.toString();
-    }
 
     public Student getStudent(String email) {
         Optional<Student> student = studentService.getStudent(email);
         if (student.isPresent())
             return student.get();
-        throw new UsernameNotFoundException("AdminService not found " + email);
+        throw new UsernameNotFoundException("Student not found " + email);
+    }
+
+    public List<AdeverintaStudentDto> getAdeverinteCuStatus(CerereStatus status) {
+        List<AdeverintaStudent> adeverintaStudentByStatus = adeverintaStudentRepository.findAdeverintaStudentsByStatus(status);
+
+        return adeverintaStudentByStatus.stream().map(AdeverintaStudentDto::fromAdeverintaStudent).toList();
+    }
+
+    public Page<AdeverintaStudentDto> findAdeverintaStudentsPending( int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<AdeverintaStudent> pageResult = adeverintaStudentRepository.findAdeverintaStudentsByStatus(CerereStatus.PENDING, pageRequest);
+        return pageResult.map(AdeverintaStudentDto::fromAdeverintaStudent);
+    }
+    public Page<AdeverintaAprobataDto> findAdeverintaStudentsApproved(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<AdeverintaStudent> pageResult = adeverintaStudentRepository.findAdeverintaStudentsByStatus(CerereStatus.PENDING, pageRequest);
+        return pageResult.map(AdeverintaAprobataDto::fromAdeverintaStudent);
+    }
+
+
+    public Page<AdeverintaStudentDto> findAdeverinteBetweenDates(LocalDate startDate, LocalDate endDate, int page, int size) {
+
+        Page<AdeverintaStudent> pageResult = getAdeverintaStudentsBetween(startDate, endDate, page, size);
+        return pageResult.map(AdeverintaStudentDto::fromAdeverintaStudent);
+    }
+
+    public Page<AdeverintaAprobataDto> findAdeverinteAprobateBetweenDates(LocalDate startDate, LocalDate endDate, int page, int size) {
+        Page<AdeverintaStudent> pageResult = getAdeverintaStudentsBetween(startDate, endDate, page, size);
+        return pageResult.map(AdeverintaAprobataDto::fromAdeverintaStudent);
+    }
+
+    public Page<AdeverintaStudent> getAdeverintaStudentsBetween(LocalDate startDate, LocalDate endDate, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<AdeverintaStudent> pageResult = adeverintaStudentRepository.findAdeverintaStudentsByDataCerereBetween(startDate, endDate, pageRequest);
+        return pageResult;
+    }
+
+    public List<AdeverintaAprobataDto> getAdeverinteAprobateForDateWithStatus (LocalDate date, CerereStatus status) {
+        List<AdeverintaStudent> adeverintaStudentsByDataInregistrariiAndStatus = adeverintaStudentRepository.findAdeverintaStudentsByDataInregistrariiAndStatus(date, status);
+        return adeverintaStudentsByDataInregistrariiAndStatus.stream()
+                .map(AdeverintaAprobataDto::fromAdeverintaStudent).toList();
     }
 }

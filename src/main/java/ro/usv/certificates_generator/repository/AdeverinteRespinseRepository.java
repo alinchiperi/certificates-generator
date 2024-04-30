@@ -2,8 +2,8 @@ package ro.usv.certificates_generator.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ro.usv.certificates_generator.model.CerereStudent;
+import ro.usv.certificates_generator.model.AdeverintaRespinsa;
 
 @Repository
-public interface CerereStudentRepository extends JpaRepository<CerereStudent, Integer> {
+public interface AdeverinteRespinseRepository extends JpaRepository<AdeverintaRespinsa, Integer> {
 }

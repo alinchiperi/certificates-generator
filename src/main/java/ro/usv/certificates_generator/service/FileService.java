@@ -10,10 +10,12 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ro.usv.certificates_generator.dto.AddStudentiExcelResponse;
-import ro.usv.certificates_generator.model.AdverintaStudent;
+import ro.usv.certificates_generator.dto.AdeverintaAprobataDto;
+import ro.usv.certificates_generator.model.AdeverintaStudent;
 import ro.usv.certificates_generator.model.Student;
-import ro.usv.certificates_generator.repository.AdverintaStudentRepository;
+import ro.usv.certificates_generator.repository.AdeverintaStudentRepository;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -25,12 +27,12 @@ import java.util.List;
 @Service
 @Slf4j
 public class FileService {
-    private final AdverintaStudentRepository adverintaStudentRepository;
+    private final AdeverintaStudentRepository adeverintaStudentRepository;
     private final List<Student> failsStudents = new ArrayList<>();
     List<Student> successStudents = new ArrayList<>();
 
-    public FileService(AdverintaStudentRepository adverintaStudentRepository) {
-        this.adverintaStudentRepository = adverintaStudentRepository;
+    public FileService(AdeverintaStudentRepository adeverintaStudentRepository) {
+        this.adeverintaStudentRepository = adeverintaStudentRepository;
     }
 
     public AddStudentiExcelResponse loadStudentsFromExcel(InputStream inputStream) {
@@ -77,7 +79,7 @@ public class FileService {
 
     public void generateYearReport(String year) {
 
-        List<AdverintaStudent> adeverinte = adverintaStudentRepository.findByAnUniversitar(year);
+        List<AdeverintaStudent> adeverinte = adeverintaStudentRepository.findByAnUniversitar(year);
 
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet(year);
@@ -91,7 +93,7 @@ public class FileService {
                 cell.setCellValue(headers[i]);
             }
             int rowNum = 1;
-            for (AdverintaStudent adverinta : adeverinte) {
+            for (AdeverintaStudent adverinta : adeverinte) {
                 Row row = sheet.createRow(rowNum++);
                 Student student = adverinta.getStudent();
 
@@ -105,7 +107,7 @@ public class FileService {
                 row.createCell(9).setCellValue(student.getAnStudiu());
                 row.createCell(10).setCellValue(student.getFinantare());
 
-                row.createCell(11).setCellValue(adverinta.getScopAdeverinta());
+                row.createCell(11).setCellValue(adverinta.getScop());
             }
 
             try (FileOutputStream fileOut = new FileOutputStream(year + ".xlsx")) {
@@ -114,6 +116,31 @@ public class FileService {
 
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public byte[] generateRaportForSecreatara(List<AdeverintaAprobataDto> adeverinte) {
+        try (Workbook workbook = new XSSFWorkbook()) {
+            Sheet sheet = workbook.createSheet("Adeverinte");
+            Row headerRow = sheet.createRow(0);
+            headerRow.createCell(0).setCellValue("Nr. înregistrare");
+            headerRow.createCell(1).setCellValue("Data înregistrării");
+            headerRow.createCell(2).setCellValue("Solicitant");
+            headerRow.createCell(3).setCellValue("Adeverință(scop)");
+            int rowNum = 1;
+            for (AdeverintaAprobataDto adverinta : adeverinte) {
+                Row row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue(adverinta.numarInregistare());
+                row.createCell(1).setCellValue(adverinta.dataCerere().toString());
+                row.createCell(2).setCellValue(adverinta.numeStudent());
+                row.createCell(3).setCellValue(adverinta.scop());
+            }
+            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+                workbook.write(outputStream);
+                return outputStream.toByteArray();
+            }
+        } catch (IOException e) {
+            return null;
         }
     }
 

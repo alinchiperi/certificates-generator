@@ -6,13 +6,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ro.usv.certificates_generator.dto.CerereStudentDto;
-import ro.usv.certificates_generator.model.CerereStudent;
 import ro.usv.certificates_generator.service.AdeverinteService;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/adeverinta")
-public class AdeverintaController {
+public class StudentController {
+
     private final AdeverinteService adeverinteService;
 
     @PostMapping("student")
