@@ -31,7 +31,7 @@ public class Student {
     char sex;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
-    List<AdverintaStudent> adeverinte;
+    List<AdeverintaStudent> adeverinte;
 
     public Student(String email, String programStudiu, String cicluStudiu, String domeniuStudiu, String anStudiu, String formaInvatamant, String finantare, String numeComplet, char sex) {
         this.email = email;

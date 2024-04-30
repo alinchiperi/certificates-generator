@@ -1,6 +1,8 @@
 package ro.usv.certificates_generator.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,7 +23,7 @@ import java.time.format.DateTimeFormatter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdverintaStudent {
+public class AdeverintaStudent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,13 +31,26 @@ public class AdverintaStudent {
 
     private int numarInregistrare;
     private int numarOrdine;
+
     private LocalDate dataInregistrarii;
-    private String scopAdeverinta;
+    private LocalDate dataCerere;
+
+    private String scop;
     private String anUniversitar;
+
+    @Enumerated(EnumType.STRING)
+    private CerereStatus status = CerereStatus.PENDING;
 
     @ManyToOne
     @JoinColumn(name = "student_id")
     private Student student;
+
+    public AdeverintaStudent(Student student, String scop, LocalDate dataCerere) {
+        this.student = student;
+        this.scop = scop;
+        this.dataCerere = dataCerere;
+    }
+
 
     public String nrInregistrare() {
         String formattedDate = dataInregistrarii.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")).replace(".", "");

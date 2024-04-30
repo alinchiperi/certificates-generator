@@ -27,9 +27,9 @@ public class SecretaraController {
         return secretaraService.getCereriInAsteptare();
     }
 
-    @PostMapping("/adeverinta/{idAdeverinta}/aproba/{numarInregistrare}")
-    public void aprobaPrimaAdeverinta(@PathVariable("idAdeverinta") Integer idAdeverinta, @PathVariable("numarInregistrare") Integer nrInregistrare) {
-
+    @PostMapping("/adeverinta/{idAdeverinta}/aproba")
+    public void aprobaAdeverinta(@PathVariable("idAdeverinta") Integer idAdeverinta ) {
+        secretaraService.aprobaAdeverinta(idAdeverinta);
     }
 
     @PostMapping("/numarInregistrare")

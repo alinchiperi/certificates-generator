@@ -1,4 +1,4 @@
-package ro.usv.certificates_generator.service;
+package ro.usv.certificates_generator.service.manager;
 
 import org.springframework.stereotype.Component;
 
