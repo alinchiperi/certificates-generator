@@ -19,4 +19,6 @@ public interface AdeverintaStudentRepository extends JpaRepository<AdeverintaStu
     Page<AdeverintaStudent> findAdeverintaStudentsByStatus(CerereStatus status, Pageable pageable);
 
     Page<AdeverintaStudent> findAdeverintaStudentsByDataCerereBetween(LocalDate startDate, LocalDate endDate, Pageable pageable);
+
+    List<AdeverintaStudent> findAdeverintaStudentsByDataInregistrariiAndStatus(LocalDate date, CerereStatus status);
 }

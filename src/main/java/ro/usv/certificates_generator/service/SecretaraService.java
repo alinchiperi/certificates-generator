@@ -118,4 +118,15 @@ public class SecretaraService {
             adeverintaStudentRepository.save(adeverintaStudent);
         }
     }
+
+    public void updateScopCerere(Integer idCerere, String scop) {
+        Optional<AdeverintaStudent> adeverintaStudent = adeverintaStudentRepository.findById(idCerere);
+        if (adeverintaStudent.isEmpty()) {
+            throw new IllegalArgumentException("Adeverinta cu id-ul " + idCerere + " nu exista");
+        }
+        else {
+            adeverintaStudent.get().setScop(scop);
+            adeverintaStudentRepository.save(adeverintaStudent.get());
+        }
+    }
 }

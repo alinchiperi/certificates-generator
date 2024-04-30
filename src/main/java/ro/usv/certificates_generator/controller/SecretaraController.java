@@ -3,8 +3,12 @@ package ro.usv.certificates_generator.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ro.usv.certificates_generator.dto.AdeverintaAprobataDto;
 import ro.usv.certificates_generator.dto.AdeverintaStudentDto;
+import ro.usv.certificates_generator.dto.CerereStudentDto;
 import ro.usv.certificates_generator.dto.RespingereCerereDto;
 import ro.usv.certificates_generator.model.CerereStatus;
 import ro.usv.certificates_generator.service.AdeverinteService;
+import ro.usv.certificates_generator.service.FileService;
 import ro.usv.certificates_generator.service.SecretaraService;
 
 import java.time.LocalDate;
@@ -28,6 +34,7 @@ public class SecretaraController {
 
     public final SecretaraService secretaraService;
     public final AdeverinteService adeverinteService;
+    private final FileService fileService;
 
     @GetMapping("/adeverinte/noi/list")
     public List<AdeverintaStudentDto> getAdeverinteInAsteptare() {
@@ -97,5 +104,26 @@ public class SecretaraController {
     @PostMapping("/adeverinta/{id}/respinge")
     public void respingeCerere(@PathVariable("id") Integer idCerere, @RequestBody RespingereCerereDto motiv) {
         secretaraService.respingeCerere(idCerere, motiv.motiv());
+    }
+
+    @PatchMapping("/adeverinta/{id}/update/scop")
+    public void updateScop(@PathVariable("id") Integer idCerere, @RequestBody CerereStudentDto scop) {
+        secretaraService.updateScopCerere(idCerere, scop.scop());
+    }
+
+    @GetMapping("/raport")
+    public ResponseEntity<byte[]> generateReport(){
+
+        List<AdeverintaAprobataDto> adeverinte = adeverinteService.getAdeverinteAprobateForDateWithStatus(LocalDate.now(), CerereStatus.APPROVED);
+
+        byte[] raport = fileService.generateRaportForSecreatara(adeverinte);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", "CertificateReport.xlsx");
+        headers.setContentLength(raport.length);
+
+        return new ResponseEntity<>(raport, headers, HttpStatus.OK);
+
     }
 }

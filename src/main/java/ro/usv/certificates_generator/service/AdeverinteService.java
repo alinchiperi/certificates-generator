@@ -75,9 +75,15 @@ public class AdeverinteService {
         return pageResult.map(AdeverintaAprobataDto::fromAdeverintaStudent);
     }
 
-    private Page<AdeverintaStudent> getAdeverintaStudentsBetween(LocalDate startDate, LocalDate endDate, int page, int size) {
+    public Page<AdeverintaStudent> getAdeverintaStudentsBetween(LocalDate startDate, LocalDate endDate, int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<AdeverintaStudent> pageResult = adeverintaStudentRepository.findAdeverintaStudentsByDataCerereBetween(startDate, endDate, pageRequest);
         return pageResult;
+    }
+
+    public List<AdeverintaAprobataDto> getAdeverinteAprobateForDateWithStatus (LocalDate date, CerereStatus status) {
+        List<AdeverintaStudent> adeverintaStudentsByDataInregistrariiAndStatus = adeverintaStudentRepository.findAdeverintaStudentsByDataInregistrariiAndStatus(date, status);
+        return adeverintaStudentsByDataInregistrariiAndStatus.stream()
+                .map(AdeverintaAprobataDto::fromAdeverintaStudent).toList();
     }
 }
