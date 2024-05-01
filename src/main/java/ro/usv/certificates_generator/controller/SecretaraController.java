@@ -21,6 +21,7 @@ import ro.usv.certificates_generator.dto.CerereStudentDto;
 import ro.usv.certificates_generator.dto.RespingereCerereDto;
 import ro.usv.certificates_generator.model.CerereStatus;
 import ro.usv.certificates_generator.service.AdeverinteService;
+import ro.usv.certificates_generator.service.EmailService;
 import ro.usv.certificates_generator.service.FileService;
 import ro.usv.certificates_generator.service.SecretaraService;
 
@@ -35,6 +36,7 @@ public class SecretaraController {
     public final SecretaraService secretaraService;
     public final AdeverinteService adeverinteService;
     private final FileService fileService;
+    private final EmailService emailService;
 
     @GetMapping("/adeverinte/noi/list")
     public List<AdeverintaStudentDto> getAdeverinteInAsteptare() {
@@ -74,7 +76,7 @@ public class SecretaraController {
 
     @GetMapping("/adeverinte/aprobate/page")
     public ResponseEntity<Page<AdeverintaAprobataDto>> getAdeverinteAprobatePage(@RequestParam(value = "page", defaultValue = "0") int page,
-                                                                                @RequestParam(value = "size", defaultValue = "10") int size) {
+                                                                                 @RequestParam(value = "size", defaultValue = "10") int size) {
 
         Page<AdeverintaAprobataDto> adeverinte = adeverinteService.findAdeverintaStudentsApproved(page, size);
         return ResponseEntity.ok(adeverinte);
@@ -112,7 +114,7 @@ public class SecretaraController {
     }
 
     @GetMapping("/raport")
-    public ResponseEntity<byte[]> generateReport(){
+    public ResponseEntity<byte[]> generateReport() {
 
         List<AdeverintaAprobataDto> adeverinte = adeverinteService.getAdeverinteAprobateForDateWithStatus(LocalDate.now(), CerereStatus.APPROVED);
 
@@ -120,7 +122,7 @@ public class SecretaraController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        headers.setContentDispositionFormData("attachment", "CertificateReport.xlsx");
+        headers.setContentDispositionFormData("attachment", "Raport.xlsx");
         headers.setContentLength(raport.length);
 
         return new ResponseEntity<>(raport, headers, HttpStatus.OK);

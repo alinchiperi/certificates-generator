@@ -120,6 +120,7 @@ public class FileService {
     }
 
     public byte[] generateRaportForSecreatara(List<AdeverintaAprobataDto> adeverinte) {
+
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Adeverinte");
             Row headerRow = sheet.createRow(0);

@@ -2,10 +2,10 @@ package ro.usv.certificates_generator.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ro.usv.certificates_generator.dto.AdeverintaAprobataDto;
 import ro.usv.certificates_generator.dto.AdeverintaStudentDto;
-import ro.usv.certificates_generator.dto.RespingereCerereDto;
 import ro.usv.certificates_generator.model.AdeverintaRespinsa;
 import ro.usv.certificates_generator.model.AdeverintaStudent;
 import ro.usv.certificates_generator.model.CerereStatus;
@@ -16,6 +16,7 @@ import ro.usv.certificates_generator.repository.SecretaraRepository;
 import ro.usv.certificates_generator.service.manager.NumarOrdineManager;
 import ro.usv.certificates_generator.service.manager.NumarInregistrareManager;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +33,8 @@ public class SecretaraService {
     private final AdeverinteRespinseRepository adeverinteRespinseRepository;
     private final AuthService authService;
     private final SecretaraRepository secretaraRepository;
+    private final EmailService emailService;
+    private final FileService fileService;
 
 
     public List<AdeverintaStudentDto> getCereriByStatus(CerereStatus cerereStatus) {
@@ -74,9 +77,25 @@ public class SecretaraService {
 
             adeverintaStudentRepository.save(adeverintaStudent);
 
+            sendRidicareAdeverintaToStudent(adeverintaStudent);
+
         }
 
 
+    }
+
+    private void sendRidicareAdeverintaToStudent(AdeverintaStudent adeverintaStudent) {
+        String emailStudent = adeverintaStudent.getStudent().getEmail();
+        LocalDate data = LocalDate.now();
+        if (data.getDayOfWeek() == DayOfWeek.FRIDAY) {
+            data = data.plusDays(3);
+        } else {
+            data = data.plusDays(1);
+        }
+        String text = "Puteți ridica adeverința de la secretariat începând cu data de " + data + ", în\n" +
+                "perioada programului de lucru al secretariatului";
+
+        emailService.sendEmailWithMessage(emailStudent, "Ridicare adeverinta", text);
     }
 
     public List<AdeverintaAprobataDto> getCereriAprobate() {
@@ -86,7 +105,7 @@ public class SecretaraService {
 
     }
 
-    public Secretara getCurrentSecretara(){
+    public Secretara getCurrentSecretara() {
         String email = authService.getEmail();
         Optional<Secretara> optionalSecretara = secretaraRepository.findByEmail(email);
         if (optionalSecretara.isPresent())
@@ -107,15 +126,16 @@ public class SecretaraService {
             AdeverintaStudent adeverintaStudent = optionalAdeverintaStudent.get();
             adeverintaStudent.setStatus(CerereStatus.REJECTED);
             AdeverintaRespinsa adeverintaRespinsa = new AdeverintaRespinsa();
-
             adeverintaRespinsa.setAdeverintaStudent(adeverintaStudent);
             adeverintaRespinsa.setMotiv(motiv);
             adeverintaRespinsa.setData(LocalDate.now());
             adeverintaRespinsa.setSecretara(getCurrentSecretara());
-
-
             adeverinteRespinseRepository.save(adeverintaRespinsa);
             adeverintaStudentRepository.save(adeverintaStudent);
+
+            String text = "Cererea dumneavoastra a fost respinsă cu motivul: " + motiv;
+            emailService.sendEmailWithMessage(adeverintaStudent.getStudent().getEmail(), "Cerere respinsă", text);
+
         }
     }
 
@@ -123,10 +143,28 @@ public class SecretaraService {
         Optional<AdeverintaStudent> adeverintaStudent = adeverintaStudentRepository.findById(idCerere);
         if (adeverintaStudent.isEmpty()) {
             throw new IllegalArgumentException("Adeverinta cu id-ul " + idCerere + " nu exista");
-        }
-        else {
+        } else {
             adeverintaStudent.get().setScop(scop);
             adeverintaStudentRepository.save(adeverintaStudent.get());
+        }
+    }
+
+    public List<Secretara> getSecretare() {
+        return secretaraRepository.findAll();
+    }
+
+    @Scheduled(cron = "0 0 16 ? * MON-FRI")
+    public void sendReportEmail() {
+        List<AdeverintaAprobataDto> adeverinte = adeverinteService.getAdeverinteAprobateForDateWithStatus(LocalDate.now(), CerereStatus.APPROVED);
+        byte[] raport = fileService.generateRaportForSecreatara(adeverinte);
+        List<Secretara> secretare = getSecretare();
+        String subject = "Raport " + LocalDate.now();
+        String text = "Raportul a fost generat pe data de " + LocalDate.now();
+        String attachmentName = "raport.xlsx";
+
+        for (Secretara secretara : secretare) {
+            String email = secretara.getEmail();
+            emailService.sendEmailWithAttachment(email, subject, text, raport, attachmentName);
         }
     }
 }
