@@ -56,7 +56,7 @@ public class SecurityConfig {
                                 .defaultSuccessUrl(frontendUrl + "/admin")
                 )
                 .oauth2Login(oath2 -> {
-                    oath2.loginPage("/login-google").permitAll();
+                    oath2.loginPage("/login/google").permitAll();
                     oath2.userInfoEndpoint(userinfo ->
                             userinfo.userService(oAuth2UserService)
                     );
