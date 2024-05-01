@@ -1,0 +1,948 @@
+{
+	"info": {
+		"_postman_id": "90d447bd-5c6c-4741-9cd5-3d37fd2cc3b7",
+		"name": "generator",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23154588"
+	},
+	"item": [
+		{
+			"name": "Student",
+			"item": [
+				{
+					"name": "Cerere adverinta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "JSESSIONID=67B04C154774AC08DEF5DF8660A263F7",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"scop\":\"medic familie2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/adeverinta/student",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"adeverinta",
+								"student"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Add info faculate",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "JSESSIONID=9520D78FFD5AB1A4CABA4A99EF97FC91",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"numeFacultate\": \"Facultatea de Ingineria Electrica si Stiinta Calculatoarelor\",\r\n   \"precurtareFacultate\": \"FIESC\",\r\n   \"anUniversitar\": \"2022-2023\",\r\n   \"numeDecan\": \"Dan MILICI\",\r\n   \"numeSecretarSef\": \"Elena CULELARIU\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/admin/addInfoFacultate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"admin",
+								"addInfoFacultate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add secretara",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "JSESSIONID=9520D78FFD5AB1A4CABA4A99EF97FC91",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"nume\": \"Dospinescu\",\r\n\"prenume\": \"Laura\",\r\n\"titlu\": \"ec\",\r\n\"email\": \"laura.dospinescu@usm.ro\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/admin/addSecretara",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"admin",
+								"addSecretara"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add studenti",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "JSESSIONID=9520D78FFD5AB1A4CABA4A99EF97FC91",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"contentType": "multipart/form-data",
+									"type": "file",
+									"src": "/D:/studenti.xlsx"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/admin/addStudentiExcel",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"admin",
+								"addStudentiExcel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "JSESSIONID=9520D78FFD5AB1A4CABA4A99EF97FC91",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/admin/reset",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"admin",
+								"reset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Informatii facultate",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "JSESSIONID=9520D78FFD5AB1A4CABA4A99EF97FC91",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/admin/getInfoFacultate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"admin",
+								"getInfoFacultate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Nume Facultate",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "JSESSIONID=9520D78FFD5AB1A4CABA4A99EF97FC91",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "teeeeess numeFacultate",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/admin/update/numeFacultate?numeFacultate=teeeesssttt test",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"admin",
+								"update",
+								"numeFacultate"
+							],
+							"query": [
+								{
+									"key": "numeFacultate",
+									"value": "teeeesssttt test"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Nume decan",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"numeFacultate\":\"Teeeeess numeFacultate\"\r\n} \r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/admin/update/numeDecan?numeDecan=teeeesssttt test",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"admin",
+								"update",
+								"numeDecan"
+							],
+							"query": [
+								{
+									"key": "numeDecan",
+									"value": "teeeesssttt test"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Nume Secretara sef",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "JSESSIONID=9520D78FFD5AB1A4CABA4A99EF97FC91",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"numeFacultate\":\"Teeeeess numeFacultate\"\r\n} \r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/admin/update/numeSecretaraSef?numeSecretaraSef=teeeesssttt test",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"admin",
+								"update",
+								"numeSecretaraSef"
+							],
+							"query": [
+								{
+									"key": "numeSecretaraSef",
+									"value": "teeeesssttt test"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update an universitar",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "JSESSIONID=9520D78FFD5AB1A4CABA4A99EF97FC91",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"numeFacultate\":\"Teeeeess numeFacultate\"\r\n} \r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/admin/update/anUniversitar?anUniversitar=2025-2026",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"admin",
+								"update",
+								"anUniversitar"
+							],
+							"query": [
+								{
+									"key": "anUniversitar",
+									"value": "2025-2026"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update prescurtare facultate",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "JSESSIONID=9520D78FFD5AB1A4CABA4A99EF97FC91",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"numeFacultate\":\"Teeeeess numeFacultate\"\r\n} \r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/admin/update/prescurtareFacultate?prescurtareFacultate=TEST",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"admin",
+								"update",
+								"prescurtareFacultate"
+							],
+							"query": [
+								{
+									"key": "prescurtareFacultate",
+									"value": "TEST"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Secretara",
+			"item": [
+				{
+					"name": "Get adeverinte noi",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "JSESSIONID=289B751A1C7564552736CAF84CA15A99",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/secretara/adeverinte/noi/list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"secretara",
+								"adeverinte",
+								"noi",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get adeverinte noi page",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "JSESSIONID=289B751A1C7564552736CAF84CA15A99",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/secretara/adeverinte/noi/page?page=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"secretara",
+								"adeverinte",
+								"noi",
+								"page"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get adeverinte aprobatepage",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "JSESSIONID=289B751A1C7564552736CAF84CA15A99",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/secretara/adeverinte/aprobate/page?page=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"secretara",
+								"adeverinte",
+								"aprobate",
+								"page"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get adeverinte noi page between",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "JSESSIONID=289B751A1C7564552736CAF84CA15A99",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/secretara/adeverinte/noi/between?startDate=2024-04-30&endDate=2024-10-16&page=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"secretara",
+								"adeverinte",
+								"noi",
+								"between"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2024-04-30"
+								},
+								{
+									"key": "endDate",
+									"value": "2024-10-16"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get adeverinte aprobate page between Copy",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "JSESSIONID=289B751A1C7564552736CAF84CA15A99",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/secretara/adeverinte/aprobate/between?startDate=2024-04-30&endDate=2024-10-16&page=0&size=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"secretara",
+								"adeverinte",
+								"aprobate",
+								"between"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2024-04-30"
+								},
+								{
+									"key": "endDate",
+									"value": "2024-10-16"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get adeverinte aprobate list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "JSESSIONID=289B751A1C7564552736CAF84CA15A99",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/secretara/adeverinte/aprobate/list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"secretara",
+								"adeverinte",
+								"aprobate",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set numar inregistrare",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "JSESSIONID=289B751A1C7564552736CAF84CA15A99",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/secretara/numarInregistrare?numarInregistrare=179",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"secretara",
+								"numarInregistrare"
+							],
+							"query": [
+								{
+									"key": "numarInregistrare",
+									"value": "179"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get numar inregisrare",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "JSESSIONID=289B751A1C7564552736CAF84CA15A99",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/secretara/numarInregistrare",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"secretara",
+								"numarInregistrare"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Aproba adeverinta by id",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/secretara/adeverinta/1/aproba",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"secretara",
+								"adeverinta",
+								"1",
+								"aproba"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Respinge cerere",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "JSESSIONID=289B751A1C7564552736CAF84CA15A99",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"motiv\":\"nu vreau\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/secretara/adeverinta/1/respinge",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"secretara",
+								"adeverinta",
+								"1",
+								"respinge"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update scop",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "JSESSIONID=289B751A1C7564552736CAF84CA15A99",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"scop\" :\"Medicul de familie\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/secretara/adeverinta/1/update/scop",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"secretara",
+								"adeverinta",
+								"1",
+								"update",
+								"scop"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get raport",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "JSESSIONID=289B751A1C7564552736CAF84CA15A99",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/secretara/raport",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"secretara",
+								"raport"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "New Request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/secretara/raport",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"secretara",
+										"raport"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "raw",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "Content-Disposition",
+									"value": "form-data; name=\"attachment\"; filename=\"CertificateReport.xlsx\""
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/octet-stream"
+								},
+								{
+									"key": "Content-Length",
+									"value": "3461"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 30 Apr 2024 13:53:45 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "PK\u0003\u0004\u0014\u0000\b\b\b\u0000���X\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0013\u0000\u0000\u0000[Content_Types].xml�S�n�0\u0010����*6�PU\u0015�C\u001f�\u0016��\u0003\\{�X�%����]\u00078�R�\nq�cfgfW�d�q�ZCB\u0013|��|�*�*h㻆},^�{Va�^K\u001b<4l\u000b�f��b\u001b\u0001+��ذ>�� \u0004�\u001e�D\u001e\"xBڐ��tL��R-e\u0007�v4�\u0013*�\f>׹h���\tZ���z��\u0017��\u0018�Q2S,���H��\u000b�\u0004v�`o\"�\u0010�U�\u001bRٵC(2q��qa9S�\u001b\r&\u0019\r��\u0016��(�A�\u001c�p(�\u001at\u001d\u0013\u0011S6��9�)�JG���sBQ�4���0\u0016\u0015\u0012�eX�\u00179\u001eu�1���\u0003dg9�2�~ω^��\u0010\u001b+~\u0010��#o�)�\u0000\u0003r�\t�ʝ4���WH��\u0010���/\u000e��/�\u0001D1,�C\u000e1|��7PK\u0007\b�,(�;\u0001\u0000\u0000\u001d\u0004\u0000\u0000PK\u0003\u0004\u0014\u0000\b\b\b\u0000���X\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u000b\u0000\u0000\u0000_rels/.rels���J\u00031\u0010�_%̽�m\u0005\u0011iڋ\b���\u0007\u0018��ݰ�LHFݾ����lA��03��1�v?�I�S.���uӂ�h���\u001bx9>��@\u0015��p�H\u0006NT`��>ӄRW��SQ�\u0011��A$�k]�@\u0001KÉb�t�\u0003J-s�\u0013�\u0011{қ����'\u0003Ι��\f�[�:b�I\f̓��<�2�M���)�oB�뼥\u0007�o��,d_L�^v�|�8�O��&���24\u000bEGn�j\u0002e���W�n\u0016�,g����Gс\u0004\u001d\n~Q/���\u001f�}\u0002PK\u0007\bn2\bK�\u0000\u0000\u0000J\u0002\u0000\u0000PK\u0003\u0004\u0014\u0000\b\b\b\u0000���X\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0010\u0000\u0000\u0000docProps/app.xmlM��\n�0\u0010D��\u0010ro�z\u0010�4� �'{�\u000f\b��\u0006�MHV�盓z�\u0019��T��E�1e\u0017�����\u0002Ɇ�ѳ����:�No7jH!bb�Y�\u0007�V���\u0004�����T�)$o���0M��9ؗGb�7�\u0001pe�\u0011�*~�R�>��Y�EB��\u0014�\u0018nW\u0005������\u0000PK\u0007\b6n�!�\u0000\u0000\u0000�\u0000\u0000\u0000PK\u0003\u0004\u0014\u0000\b\b\b\u0000���X\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0011\u0000\u0000\u0000docProps/core.xmlm��J�0\u0014E%�Mz\u0019��v\u0010e@P\u001c���[H�m���D;���u���%��,Nv�=�\u0011}���5�R�\u0011ha䠻\u001a?���\u0012#\u001f��|4\u001aj|\u0002��M%,\u0013���\u0019\u000b.\f�Q�hτ�q\u001f�e�xу�>����q��xu\u001d�\\��\u000eHN�\u0005Q\u0010�䁓Y��Ո�J)V�}w�\"���\b\nt�$K3��\u0006p��;�$+y��JMӔN��ō2r��{\\�O\u0006=�]\u0000n���\t\u0007<�DQ����J��������&�y��2)h�\u0015lS�r�R�_���l\\s\u0015\u000b�\u0001�\u001fngn}�ȟ��OPK\u0007\b�D_A\u0006\u0001\u0000\u0000�\u0001\u0000\u0000PK\u0003\u0004\u0014\u0000\b\b\b\u0000���X\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0014\u0000\u0000\u0000xl/sharedStrings.xml]��J�0\u0014����\u0010��E��St�6C\u0019\u0011ܸ�g\u001f�;��&�����\u001d|\tg�c�AP��������͎�\u0015|@G5υ�\f�u\u001dR_���l�7���\n!���\u0014k��l&|�a���\u0011\n5\u001fb���\f�\u0000�\u0004�&��윷&.��2L\u001eL\u0017\u0006�hGY(u!�A�\n����`�\u001f��\u0010��Pɨ+y�?��q�{��yp#�\u0018\rŔ4\u001d,�\"}�\u001f�g�u�yj�W�\u0011�\\)�JQ��L�c��2[��l\u0007��u�,X3\"ew�P�X�e;cqD(��\\\u001e��\u0001PK\u0007\b�\u001cĐ�\u0000\u0000\u0000�\u0001\u0000\u0000PK\u0003\u0004\u0014\u0000\b\b\b\u0000���X\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\r\u0000\u0000\u0000xl/styles.xml���n� \u0010��J}\u0007���d���&C%W��J]�9ۨpX@\"�O_0N�L\u001d:����\u001f���n4���ye���UA\t`c�®�\u001f��iKw���aҰ�\u0001\u0002�\u000e�\u0015�C\u0018^\u0018�M\u000fF��\u001d\u0000�Ik�\u0011!��c~p �O&�٦(��\u0011\n)/�dj\u0013<i�\tCE\u000b�x�Z�*k�\u0005^�or\u0016:*i���Xm\u001dQ(a\u0004Y�m�P\u0018�]�B��S3O\u0018��,o�0O��\u0019��%��[��Ii�;Ćf���\b\u0001\u001cֱ K~�\u0006�(Z�������}�91�8�\u0010/>Z'�\u0016nߟ%^jhC48��)\u0006;�t\u0018�51�Jt\u0016�NȋcI\"�\u0001��iu��\u001d{lI���L����_�8ВfL.\u0012�����ƒ����hv���\u000fPK\u0007\b����E\u0001\u0000\u0000�\u0002\u0000\u0000PK\u0003\u0004\u0014\u0000\b\b\b\u0000���X\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u000f\u0000\u0000\u0000xl/workbook.xml��AO�0\f��H���w�\u0014\u0010��鄄�v�0v�\u0012w��$�\u001d6~>i�\u000e����������;\f��>E\r�J��h����s�~�\f����9':�S:��G���<�R��1\u0018^�\u0011cq�D��\"� y$4�{�\u001c\u0006y�ԓ\f�G�$�����u��[�_\u0001c��\u0010\u000e&�������6� �L��E=j���\b�m&g��̿�$��ٟpk�\u001a���?��y�\"��\u001a^\u001d�/��\u0011\u0004��i��{\u000013�\"�9eY�˱�\u0007PK\u0007\b��N��\u0000\u0000\u0000b\u0001\u0000\u0000PK\u0003\u0004\u0014\u0000\b\b\b\u0000���X\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u001a\u0000\u0000\u0000xl/_rels/workbook.xml.rels��Mk�0\f@���}q��\u0018�n/c�k?~���84����˿����@\u0007;�$��{\u000f�\\��:Q�>\u0006\u0003MU��`��Cg��xz\u0005ł��\u0010\u0003\u0019��a�Zni@)_���Ua\u00046�Eқ�l=��UL\u0014ʦ�yD)�����\u001d�E]��|ˀ9Sm���q\r�=��\u0000{��v�K\u001aW\u0005\\VS��hc���ޣ�\u001c)�\u001d���AߏY���4��+����瘏��Z^F��\u001f�5FϮ��\u0000PK\u0007\bg뢨�\u0000\u0000\u00004\u0002\u0000\u0000PK\u0003\u0004\u0014\u0000\b\b\b\u0000���X\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0018\u0000\u0000\u0000xl/worksheets/sheet1.xmle�Kk�0\u0010���\u0007�{#�i�\u0012d��!��B��.��\u0007�%#m���Jnj\u0012붃�af%��Oې\u0013hS+\u0019�p\u0016P\u00022Sy-˘~}��\u001e�&����\u0007S\u0001 �\u0006ibZ!vk�LVA+�Lu �I�t+�J]2�i\u0010�`j\u001b\u0016\u0005�����4�y݂t�DC\u0011�m��E�%|`�k���L\\t�����<��\"��\u0003\u001a�\u0010�F}\u0004�f�}?�y�$�B\u001c\u001b|W�3�e�vӅ]�?r'P$\\��h{b\u000bfn؆6(��\u0012�B\u0013~J\u0002�N6(;\u0013�>\u0011^\u0013O>\u0011]\u0013;���\u0004���b�X,�,��b>��\u0014�夘O�&����u��W��Z\u001a�*D�Z�l���P\nA;5���_b\u0014\r\u00148P��g\u0019fT���^u�y�/PK\u0007\b�A��C\u0001\u0000\u0000�\u0002\u0000\u0000PK\u0001\u0002\u0014\u0000\u0014\u0000\b\b\b\u0000���X�,(�;\u0001\u0000\u0000\u001d\u0004\u0000\u0000\u0013\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000[Content_Types].xmlPK\u0001\u0002\u0014\u0000\u0014\u0000\b\b\b\u0000���Xn2\bK�\u0000\u0000\u0000J\u0002\u0000\u0000\u000b\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000|\u0001\u0000\u0000_rels/.relsPK\u0001\u0002\u0014\u0000\u0014\u0000\b\b\b\u0000���X6n�!�\u0000\u0000\u0000�\u0000\u0000\u0000\u0010\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000�\u0002\u0000\u0000docProps/app.xmlPK\u0001\u0002\u0014\u0000\u0014\u0000\b\b\b\u0000���X�D_A\u0006\u0001\u0000\u0000�\u0001\u0000\u0000\u0011\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000k\u0003\u0000\u0000docProps/core.xmlPK\u0001\u0002\u0014\u0000\u0014\u0000\b\b\b\u0000���X�\u001cĐ�\u0000\u0000\u0000�\u0001\u0000\u0000\u0014\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000�\u0004\u0000\u0000xl/sharedStrings.xmlPK\u0001\u0002\u0014\u0000\u0014\u0000\b\b\b\u0000���X����E\u0001\u0000\u0000�\u0002\u0000\u0000\r\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000�\u0005\u0000\u0000xl/styles.xmlPK\u0001\u0002\u0014\u0000\u0014\u0000\b\b\b\u0000���X��N��\u0000\u0000\u0000b\u0001\u0000\u0000\u000f\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000n\u0007\u0000\u0000xl/workbook.xmlPK\u0001\u0002\u0014\u0000\u0014\u0000\b\b\b\u0000���Xg뢨�\u0000\u0000\u00004\u0002\u0000\u0000\u001a\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000�\b\u0000\u0000xl/_rels/workbook.xml.relsPK\u0001\u0002\u0014\u0000\u0014\u0000\b\b\b\u0000���X�A��C\u0001\u0000\u0000�\u0002\u0000\u0000\u0018\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000�\t\u0000\u0000xl/worksheets/sheet1.xmlPK\u0005\u0006\u0000\u0000\u0000\u0000\t\u0000\t\u0000?\u0002\u0000\u00000\u000b\u0000\u0000\u0000\u0000"
+						}
+					]
+				}
+			]
+		}
+	]
+}
