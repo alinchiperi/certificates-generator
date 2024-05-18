@@ -5,11 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ro.usv.certificates_generator.dto.AdeverintaAprobataDto;
+import ro.usv.certificates_generator.dto.AdeverintaPrintareDto;
 import ro.usv.certificates_generator.dto.AdeverintaStudentDto;
 import ro.usv.certificates_generator.model.AdeverintaRespinsa;
 import ro.usv.certificates_generator.model.AdeverintaStudent;
 import ro.usv.certificates_generator.model.CerereStatus;
+import ro.usv.certificates_generator.model.InformatiiFacultate;
 import ro.usv.certificates_generator.model.Secretara;
+import ro.usv.certificates_generator.model.Student;
 import ro.usv.certificates_generator.repository.AdeverintaStudentRepository;
 import ro.usv.certificates_generator.repository.AdeverinteRespinseRepository;
 import ro.usv.certificates_generator.repository.SecretaraRepository;
@@ -18,6 +21,7 @@ import ro.usv.certificates_generator.service.manager.NumarInregistrareManager;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +39,7 @@ public class SecretaraService {
     private final SecretaraRepository secretaraRepository;
     private final EmailService emailService;
     private final FileService fileService;
+    private final InformatiiFacultateService informatiiFacultateService;
 
 
     public List<AdeverintaStudentDto> getCereriByStatus(CerereStatus cerereStatus) {
@@ -80,7 +85,6 @@ public class SecretaraService {
             sendRidicareAdeverintaToStudent(adeverintaStudent);
 
         }
-
 
     }
 
@@ -165,6 +169,54 @@ public class SecretaraService {
         for (Secretara secretara : secretare) {
             String email = secretara.getEmail();
             emailService.sendEmailWithAttachment(email, subject, text, raport, attachmentName);
+        }
+    }
+
+    public List<AdeverintaPrintareDto> getAdeverintePrintare() {
+        List<AdeverintaPrintareDto> adeverinte = new ArrayList<>();
+        Secretara secretara = getCurrentSecretara();
+        InformatiiFacultate informatiiFacultate = informatiiFacultateService.getInformatiiFacultate();
+
+        List<AdeverintaStudent> adeverinteStudentsByStatusAndPrinted = adeverintaStudentRepository.findAdeverintaStudentsByStatusAndIsPrinted(CerereStatus.APPROVED, false);
+
+        log.info("adeverinte: {}", adeverinteStudentsByStatusAndPrinted);
+
+        for (AdeverintaStudent adeverintaStudent : adeverinteStudentsByStatusAndPrinted) {
+            AdeverintaPrintareDto adv = getAdeverintaPrintareDto(adeverintaStudent, informatiiFacultate, secretara);
+
+            adeverinte.add(adv);
+        }
+
+        return adeverinte;
+    }
+
+    private static AdeverintaPrintareDto getAdeverintaPrintareDto(AdeverintaStudent adeverintaStudent, InformatiiFacultate informatiiFacultate, Secretara secretara) {
+        Student student = adeverintaStudent.getStudent();
+        AdeverintaPrintareDto adv = new AdeverintaPrintareDto(
+                adeverintaStudent.getId(),
+                adeverintaStudent.getNrInregistrare(),
+                student.getNumeComplet(),
+                student.getAnStudiu(),
+                student.getProgramStudiu(),
+                student.getDomeniuStudiu(),
+                student.getFinantare(),
+                informatiiFacultate.getNumeDecan(),
+                informatiiFacultate.getNumeSecretarSef(),
+                adeverintaStudent.getScop(),
+                secretara.getNumeComplet());
+        return adv;
+    }
+
+    public void setPrintAdeverinte(List<AdeverintaPrintareDto> adeverinte) {
+        for (AdeverintaPrintareDto adeverintaPrintareDto : adeverinte) {
+            Integer nrInregistrare = adeverintaPrintareDto.id();
+            Optional<AdeverintaStudent> optionalAdeverintaStudent = adeverintaStudentRepository.findById(nrInregistrare);
+            if (optionalAdeverintaStudent.isEmpty()) {
+                throw new IllegalArgumentException("Adeverinta cu id-ul " + nrInregistrare + " nu exista");
+            } else {
+                optionalAdeverintaStudent.get().setPrinted(true);
+                adeverintaStudentRepository.save(optionalAdeverintaStudent.get());
+            }
         }
     }
 }

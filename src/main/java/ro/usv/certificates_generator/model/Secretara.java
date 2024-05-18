@@ -44,4 +44,8 @@ public class Secretara {
         this.titlu = titlu;
         this.email = email;
     }
+
+    public String getNumeComplet() {
+      return titlu + " " + prenume + " " + nume.toUpperCase();
+    }
 }

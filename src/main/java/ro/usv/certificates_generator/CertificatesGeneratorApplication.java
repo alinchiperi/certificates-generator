@@ -22,7 +22,7 @@ public class CertificatesGeneratorApplication {
 
             Admin admin = new Admin("admin", passwordEncoder.encode("admin"));
 
-            Secretara secretara = new Secretara("Alin","Chiperi","ing","alin.chiperi@student.usv.ro");
+            Secretara secretara = new Secretara("Chiperi","Alin","ing","alin.chiperi@student.usv.ro");
             secretaraRepository.save(secretara);
             adminRepository.save(admin);
 

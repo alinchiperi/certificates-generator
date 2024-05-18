@@ -24,6 +24,7 @@ import java.io.InputStream;
 public class AdminService implements UserDetailsService {
     private final AdminRepository adminRepository;
     private final InformatiiFacultateRepository informatiiFacultateRepository;
+    private final InformatiiFacultateService informatiiFacultateService;
     private final SecretaraRepository secretaraRepository;
     private final FileService fileService;
     private final StudentExcelRepository studentRepository;
@@ -34,8 +35,7 @@ public class AdminService implements UserDetailsService {
     }
 
     public InformatiiFacultate addInformatiiFacultate(InformatiiFacultateDto informatiiFacultateDto) {
-        InformatiiFacultate informatiiFacultate = informatiiFacultateDto.toInformatiiFacultate();
-        return informatiiFacultateRepository.save(informatiiFacultate);
+        return informatiiFacultateService.addInformatiiFacultate(informatiiFacultateDto);
 
     }
 

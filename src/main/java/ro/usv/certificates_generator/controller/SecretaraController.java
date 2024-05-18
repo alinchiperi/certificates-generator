@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ro.usv.certificates_generator.dto.AdeverintaAprobataDto;
+import ro.usv.certificates_generator.dto.AdeverintaPrintareDto;
 import ro.usv.certificates_generator.dto.AdeverintaStudentDto;
 import ro.usv.certificates_generator.dto.CerereStudentDto;
 import ro.usv.certificates_generator.dto.RespingereCerereDto;
@@ -33,20 +34,33 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecretaraController {
 
+
     public final SecretaraService secretaraService;
     public final AdeverinteService adeverinteService;
     private final FileService fileService;
-    private final EmailService emailService;
+
 
     @GetMapping("/adeverinte/noi/list")
     public List<AdeverintaStudentDto> getAdeverinteInAsteptare() {
         return secretaraService.getCereriByStatus(CerereStatus.PENDING);
     }
 
+    @GetMapping("/adeverinte/printare/list")
+    public List<AdeverintaPrintareDto> getAdeverintePrintare() {
+        List<AdeverintaPrintareDto> adeverintePrintare = secretaraService.getAdeverintePrintare();
+        return adeverintePrintare;
+    }
+
+    @PostMapping("/adeverinte/printare/print")
+    public void setPrintAdeverinte(@RequestBody List<AdeverintaPrintareDto> adeverinte) {
+
+        secretaraService.setPrintAdeverinte(adeverinte);
+    }
+
+
     @GetMapping("/adeverinte/noi/page")
     public ResponseEntity<Page<AdeverintaStudentDto>> getAdeverintePandingPage(@RequestParam(value = "page", defaultValue = "0") int page,
                                                                                @RequestParam(value = "size", defaultValue = "10") int size) {
-
 
         Page<AdeverintaStudentDto> adeverinte = adeverinteService.findAdeverintaStudentsPending(page, size);
         return ResponseEntity.ok(adeverinte);
