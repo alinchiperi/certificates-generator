@@ -14,22 +14,24 @@ import java.io.IOException;
 @Component
 public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
     @Value("${frontend.url}")
-
     String frontendUrl;
+
+
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
         if (authentication instanceof OAuth2AuthenticationToken oauthToken) {
             String email = getEmailFromOAuthToken(oauthToken);
             if (!isAllowedEmailDomain(email)) {
-                response.sendRedirect("/access-denied");
+                response.sendRedirect(frontendUrl + "/access-denied");
                 return;
             }
-        }
 
-        this.setAlwaysUseDefaultTargetUrl(true);
-        this.setDefaultTargetUrl(frontendUrl);
-        super.onAuthenticationSuccess(request, response, authentication);
+            String redirectUrl = determineRedirectUrl(oauthToken);
+            response.sendRedirect(redirectUrl);
+        } else {
+            super.onAuthenticationSuccess(request, response, authentication);
+        }
     }
 
     private String getEmailFromOAuthToken(OAuth2AuthenticationToken oauthToken) {
@@ -38,6 +40,16 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
     }
 
     private boolean isAllowedEmailDomain(String email) {
-        return email != null && email.endsWith("@student.usv.ro");
+        return email != null && (email.endsWith("@student.usv.ro")||email.endsWith("@usm.ro"));
+    }
+
+    private String determineRedirectUrl(OAuth2AuthenticationToken oauthToken) {
+        String email = getEmailFromOAuthToken(oauthToken);
+        if (email.endsWith("@student.usv.ro")) {
+            return frontendUrl + "/student";
+        } else if (email.endsWith("@usm.ro")) {
+            return frontendUrl + "/secretara";
+        }
+        return frontendUrl + "/access-denied";
     }
 }
