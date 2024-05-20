@@ -30,6 +30,10 @@ public class CertificatesGeneratorApplication {
                 Secretara secretara = new Secretara("Chiperi", "Alin", "ing", "chiperialin@gmail.com");
                 secretaraRepository.save(secretara);
             }
+            if (secretaraRepository.findByEmail("orobet.alin@gmail.com").isEmpty()){
+                Secretara secretara = new Secretara("Orobet", "Alin", "ing", "orobet.alin@gmail.com");
+                secretaraRepository.save(secretara);
+            }
 
         };
     }

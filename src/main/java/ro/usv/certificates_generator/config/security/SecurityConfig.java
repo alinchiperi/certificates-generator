@@ -31,10 +31,11 @@ public class SecurityConfig {
 
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
     private final CustomOAuth2UserService oAuth2UserService;
-
-    public SecurityConfig(OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler, CustomOAuth2UserService oAuth2UserService) {
+    private final CustomOAuth2FailureHandler oAuth2FailureHandler;
+    public SecurityConfig(OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler, CustomOAuth2UserService oAuth2UserService, CustomOAuth2FailureHandler oAuth2FailureHandler) {
         this.oAuth2LoginSuccessHandler = oAuth2LoginSuccessHandler;
         this.oAuth2UserService = oAuth2UserService;
+        this.oAuth2FailureHandler = oAuth2FailureHandler;
     }
 
     @Bean
@@ -45,15 +46,15 @@ public class SecurityConfig {
 
                 .cors(cors -> corsConfigurationSource())
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/api/adeverinta/**").hasAnyRole( "STUDENT");
-                    auth.requestMatchers(("/api/secretara/**")).hasAnyRole( "SECRETARY","ADMIN");
-                    auth.requestMatchers(("/api/admin/**")).hasAnyRole( "ADMIN");
+                    auth.requestMatchers("/api/adeverinta/**").hasAnyRole("STUDENT");
+                    auth.requestMatchers(("/api/secretara/**")).hasAnyRole("SECRETARY", "ADMIN");
+                    auth.requestMatchers(("/api/admin/**")).hasAnyRole("ADMIN");
                     auth.anyRequest().authenticated();
                 })
 
                 .formLogin(
                         form -> form
-                                .defaultSuccessUrl(frontendUrl + "/admin",true)
+                                .defaultSuccessUrl(frontendUrl + "/admin", true)
                 )
                 .oauth2Login(oath2 -> {
                     oath2.loginPage("/login/google").permitAll();
@@ -61,6 +62,7 @@ public class SecurityConfig {
                             userinfo.userService(oAuth2UserService)
                     );
                     oath2.successHandler(oAuth2LoginSuccessHandler);
+                    oath2.failureHandler(oAuth2FailureHandler);
 
                 });
 
