@@ -1,6 +1,7 @@
 package ro.usv.certificates_generator.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,7 +32,14 @@ public class AdminService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return adminRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("admin not found " + username));
+        return adminRepository.findByUsername(username)
+                .map(admin ->
+                    User.withUsername(admin.getUsername())
+                            .password(admin.getPassword())
+                            .authorities("ROLE_ADMIN")
+                            .build())
+                .orElseThrow(() -> new UsernameNotFoundException("admin not found " + username));
+
     }
 
     public InformatiiFacultate addInformatiiFacultate(InformatiiFacultateDto informatiiFacultateDto) {

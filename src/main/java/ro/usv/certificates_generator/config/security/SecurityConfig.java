@@ -45,12 +45,15 @@ public class SecurityConfig {
 
                 .cors(cors -> corsConfigurationSource())
                 .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers("/api/adeverinta/**").hasAnyRole( "STUDENT");
+                    auth.requestMatchers(("/api/secretara/**")).hasAnyRole( "SECRETARY","ADMIN");
+                    auth.requestMatchers(("/api/admin/**")).hasAnyRole( "ADMIN");
                     auth.anyRequest().authenticated();
                 })
 
                 .formLogin(
                         form -> form
-                                .defaultSuccessUrl(frontendUrl + "/admin")
+                                .defaultSuccessUrl(frontendUrl + "/admin",true)
                 )
                 .oauth2Login(oath2 -> {
                     oath2.loginPage("/login/google").permitAll();
