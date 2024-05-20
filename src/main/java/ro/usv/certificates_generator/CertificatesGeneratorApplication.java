@@ -16,15 +16,20 @@ public class CertificatesGeneratorApplication {
     public static void main(String[] args) {
         SpringApplication.run(CertificatesGeneratorApplication.class, args);
     }
+
     @Bean
     CommandLineRunner runner(AdminRepository adminRepository, PasswordEncoder passwordEncoder, SecretaraRepository secretaraRepository) {
         return args -> {
 
-            Admin admin = new Admin("admin", passwordEncoder.encode("admin"));
+            if (adminRepository.findByUsername("admin").isEmpty()) {
+                Admin admin = new Admin("admin", passwordEncoder.encode("admin"));
+                adminRepository.save(admin);
 
-            Secretara secretara = new Secretara("Chiperi","Alin","ing","alin.chiperi@student.usv.ro");
-            secretaraRepository.save(secretara);
-            adminRepository.save(admin);
+            }
+            if (secretaraRepository.findByEmail("chiperialin@gmail.com").isEmpty()) {
+                Secretara secretara = new Secretara("Chiperi", "Alin", "ing", "chiperialin@gmail.com");
+                secretaraRepository.save(secretara);
+            }
 
         };
     }
