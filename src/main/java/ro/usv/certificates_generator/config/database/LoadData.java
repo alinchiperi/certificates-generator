@@ -11,11 +11,11 @@ import ro.usv.certificates_generator.service.FileService;
 import java.io.InputStream;
 import java.util.List;
 
-@RequiredArgsConstructor
-@Component
-public class LoadData implements CommandLineRunner {
+//@RequiredArgsConstructor
+//@Component
+public class LoadData /*implements CommandLineRunner*/ {
 
-    private final FileService fileService;
+ /*   private final FileService fileService;
     private final StudentExcelRepository repository;
 
     @Override
@@ -28,7 +28,7 @@ public class LoadData implements CommandLineRunner {
         InputStream inputStream = resource.getInputStream();
 
         List<Student> students = fileService.loadStudentsFromExcel(inputStream).successStudents();
-        repository.saveAll(students);
+        repository.saveAll(students);*/
 
-    }
+//    }
 }

@@ -16,6 +16,11 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
     @Value("${frontend.url}")
     String frontendUrl;
 
+    @Value("${student.email.suffix}")
+    private String studentSuffix;
+
+    @Value("${secretara.email.suffix}")
+    private  String secretaraSuffix;
 
 
     @Override
@@ -40,14 +45,14 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
     }
 
     private boolean isAllowedEmailDomain(String email) {
-        return email != null && (email.endsWith("@student.usv.ro")||email.endsWith("@usm.ro"));
+        return email != null && (email.endsWith(studentSuffix)||email.endsWith(secretaraSuffix));
     }
 
     private String determineRedirectUrl(OAuth2AuthenticationToken oauthToken) {
         String email = getEmailFromOAuthToken(oauthToken);
-        if (email.endsWith("@student.usv.ro")) {
+        if (email.endsWith(studentSuffix)) {
             return frontendUrl + "/student";
-        } else if (email.endsWith("@usm.ro")) {
+        } else if (email.endsWith(secretaraSuffix)) {
             return frontendUrl + "/secretara";
         }
         return frontendUrl + "/access-denied";
