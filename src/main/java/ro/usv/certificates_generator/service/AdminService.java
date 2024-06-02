@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ro.usv.certificates_generator.dto.AddStudentiExcelResponse;
 import ro.usv.certificates_generator.dto.InformatiiFacultateDto;
-import ro.usv.certificates_generator.dto.SecretareDto;
+import ro.usv.certificates_generator.dto.SecretaraDto;
+import ro.usv.certificates_generator.dto.StudentDto;
 import ro.usv.certificates_generator.model.InformatiiFacultate;
 import ro.usv.certificates_generator.model.Secretara;
+import ro.usv.certificates_generator.model.Student;
 import ro.usv.certificates_generator.repository.AdminRepository;
 import ro.usv.certificates_generator.repository.InformatiiFacultateRepository;
 import ro.usv.certificates_generator.repository.SecretaraRepository;
@@ -19,6 +21,8 @@ import ro.usv.certificates_generator.repository.StudentExcelRepository;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -47,8 +51,8 @@ public class AdminService implements UserDetailsService {
 
     }
 
-    public Secretara addSecretare(SecretareDto secretareDto) {
-        Secretara secretara = secretareDto.toSecretara();
+    public Secretara addSecretare(SecretaraDto secretaraDto) {
+        Secretara secretara = secretaraDto.toSecretara();
         return secretaraRepository.save(secretara);
     }
 
@@ -104,5 +108,37 @@ public class AdminService implements UserDetailsService {
         informatiiFacultate.setAnUniversitar(anUniversitar);
         informatiiFacultateRepository.save(informatiiFacultate);
         return InformatiiFacultateDto.fromInformatiiFacultate(informatiiFacultate);
+    }
+
+    public List<SecretaraDto> getSecretare() {
+        List<Secretara> allSecretary = secretaraRepository.findAll();
+
+
+        return allSecretary.stream().map(SecretaraDto::fromSecretara).collect(Collectors.toList());
+    }
+
+    public List<StudentDto> getStudents() {
+        List<Student> allStudents = studentRepository.findAll();
+        return allStudents.stream().map(StudentDto::fromStudent).collect(Collectors.toList());
+    }
+
+    public void deleteSecretara(int id) {
+        secretaraRepository.deleteById(id);
+    }
+
+    public void deleteStudent(String email) {
+        studentRepository.deleteById(email);
+    }
+
+    public Secretara updateSecretara( int id, SecretaraDto secretaraDto) {
+        Secretara secretara = secretaraRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("Secretara with id " + id + " not found"));
+
+        secretara.setNume(secretaraDto.nume());
+        secretara.setPrenume(secretaraDto.prenume());
+        secretara.setTitlu(secretaraDto.titlu());
+        secretara.setEmail(secretaraDto.email());
+        secretaraRepository.save(secretara);
+        return secretara;
+
     }
 }

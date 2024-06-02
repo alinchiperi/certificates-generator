@@ -68,7 +68,8 @@ public class FileService {
 
         String fileName = "studenti.xlsx";
 
-        File directory = new File("src\\main\\resources\\");
+        String directoryPath = "src" + File.separator + "main" + File.separator + "resources";
+        File directory = new File(directoryPath);
 
         File newFile = new File(directory.getAbsolutePath() + File.separator + fileName);
         try (FileOutputStream fos = new FileOutputStream(newFile)) {
