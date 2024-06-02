@@ -61,7 +61,7 @@ public class AdminService implements UserDetailsService {
         InputStream inputStream = file.getInputStream();
         AddStudentiExcelResponse addStudentiExcelResponse = fileService.loadStudentsFromExcel(inputStream);
         studentRepository.saveAll(addStudentiExcelResponse.successStudents());
-        fileService.saveStudentsExcelToLocal(file);
+//        fileService.saveStudentsExcelToLocal(file);
         return addStudentiExcelResponse;
     }
 
