@@ -67,7 +67,10 @@ public class AdminService implements UserDetailsService {
 
     public void reset() {
         //TODO not mock year, add from controller
-        fileService.generateYearReport("2023-2024");
+        String year = informatiiFacultateService.getInformatiiFacultate().getAnUniversitar();
+        fileService.generateYearReport(year);
+        studentRepository.deleteAll();
+
     }
 
     public InformatiiFacultateDto updateNumeFacultate(String numeFacultate) {

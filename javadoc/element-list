@@ -1,0 +1,11 @@
+ro.usv.certificates_generator
+ro.usv.certificates_generator.config.database
+ro.usv.certificates_generator.config.handler
+ro.usv.certificates_generator.config.scheduler
+ro.usv.certificates_generator.config.security
+ro.usv.certificates_generator.controller
+ro.usv.certificates_generator.dto
+ro.usv.certificates_generator.model
+ro.usv.certificates_generator.repository
+ro.usv.certificates_generator.service
+ro.usv.certificates_generator.service.manager

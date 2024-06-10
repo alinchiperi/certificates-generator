@@ -15,6 +15,11 @@ public class StudentController {
 
     private final AdeverinteService adeverinteService;
 
+    /**
+     * A method to generate a certificate based on a student request.
+     *
+     * @param  request   the CerereStudentDto object containing the student request data
+     */
     @PostMapping("student")
     public void generateCertificate(@RequestBody CerereStudentDto request) {
         adeverinteService.procesareCerereStudent(request);
