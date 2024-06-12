@@ -53,7 +53,7 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         if (email.endsWith(studentSuffix)) {
             return frontendUrl + "/student";
         } else if (email.endsWith(secretaraSuffix)) {
-            return frontendUrl + "/secretara";
+            return frontendUrl + "/secretary";
         }
         return frontendUrl + "/access-denied";
     }
