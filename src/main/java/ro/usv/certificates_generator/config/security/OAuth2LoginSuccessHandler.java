@@ -51,9 +51,9 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
     private String determineRedirectUrl(OAuth2AuthenticationToken oauthToken) {
         String email = getEmailFromOAuthToken(oauthToken);
         if (email.endsWith(studentSuffix)) {
-            return frontendUrl + "/student";
+            return frontendUrl + "/ro/student";
         } else if (email.endsWith(secretaraSuffix)) {
-            return frontendUrl + "/secretary";
+            return frontendUrl + "/ro/secretary";
         }
         return frontendUrl + "/access-denied";
     }

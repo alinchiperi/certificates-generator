@@ -54,7 +54,7 @@ public class SecurityConfig {
 
                 .formLogin(
                         form -> form
-                                .defaultSuccessUrl(frontendUrl + "/admin", true)
+                                .defaultSuccessUrl(frontendUrl + "/ro/admin", true)
                 )
                 .oauth2Login(oath2 -> {
                     oath2.loginPage("/login/google").permitAll();
