@@ -1,6 +1,9 @@
 package ro.usv.certificates_generator.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -71,8 +74,16 @@ public class AdminController {
      * Resets the system.
      */
     @PostMapping("/reset")
-    public void reset() {
-        adminService.reset();
+    public ResponseEntity<byte[]> reset() {
+
+        byte[] raport = adminService.reset();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", "Raport_2023-202.xlsx");
+        headers.setContentLength(raport.length);
+
+        return new ResponseEntity<>(raport, headers, HttpStatus.OK);
+
     }
 
     /**

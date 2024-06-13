@@ -65,11 +65,13 @@ public class AdminService implements UserDetailsService {
         return addStudentiExcelResponse;
     }
 
-    public void reset() {
+    public byte[] reset() {
         //TODO not mock year, add from controller
-        String year = informatiiFacultateService.getInformatiiFacultate().getAnUniversitar();
-        fileService.generateYearReport(year);
+//        String year = informatiiFacultateService.getInformatiiFacultate().getAnUniversitar();
+        String year = "2023-2024";
+        byte[] bytes = fileService.generateYearReport(year);
         studentRepository.deleteAll();
+        return bytes;
 
     }
 

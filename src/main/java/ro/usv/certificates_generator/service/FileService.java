@@ -78,7 +78,7 @@ public class FileService {
 
     }
 
-    public void generateYearReport(String year) {
+    public byte[] generateYearReport(String year) {
 
         List<AdeverintaStudent> adeverinte = adeverintaStudentRepository.findByAnUniversitar(year);
 
@@ -111,8 +111,9 @@ public class FileService {
                 row.createCell(11).setCellValue(adverinta.getScop());
             }
 
-            try (FileOutputStream fileOut = new FileOutputStream(year + ".xlsx")) {
-                workbook.write(fileOut);
+            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+                workbook.write(outputStream);
+                return outputStream.toByteArray();
             }
 
         } catch (IOException e) {
