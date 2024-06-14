@@ -26,14 +26,14 @@ public class CertificatesGeneratorApplication {
                 adminRepository.save(admin);
 
             }
-            if (secretaraRepository.findByEmail("chiperialin@gmail.com").isEmpty()) {
-                Secretara secretara = new Secretara("Chiperi", "Alin", "ing", "chiperialin@gmail.com");
+            if (secretaraRepository.findByEmail("ovidiug@usm.ro").isEmpty()) {
+                Secretara secretara = new Secretara("Gherman", "Ovidiu", "ing", "ovidiug@usm.ro");
                 secretaraRepository.save(secretara);
             }
-            if (secretaraRepository.findByEmail("orobet.alin@gmail.com").isEmpty()){
-                Secretara secretara = new Secretara("Orobet", "Alin", "ing", "orobet.alin@gmail.com");
-                secretaraRepository.save(secretara);
-            }
+//            if (secretaraRepository.findByEmail("orobet.alin@gmail.com").isEmpty()){
+//                Secretara secretara = new Secretara("Orobet", "Alin", "ing", "orobet.alin@gmail.com");
+//                secretaraRepository.save(secretara);
+//            }
 
         };
     }
