@@ -48,7 +48,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/adeverinta/**").hasAnyRole("STUDENT");
                     auth.requestMatchers(("/api/secretara/**")).hasAnyRole("SECRETARY", "ADMIN");
-                    auth.requestMatchers(("/api/admin/**")).hasAnyRole("ADMIN", "SECRETARY");
+                    auth.requestMatchers(("/api/admin/**")).hasAnyRole("ADMIN");
                     auth.anyRequest().authenticated();
                 })
 
